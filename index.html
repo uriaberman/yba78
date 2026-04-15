@@ -191,15 +191,11 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
   </div>
   <div class="mode-card" onclick="showScreen('categories')">
     <div class="mode-icon">&#128218;</div>
-    <div><div class="mode-label">לפי קטגוריה</div><div class="mode-desc">בחירת נושא אחד</div></div>
+    <div><div class="mode-label">קטגוריות</div><div class="mode-desc">בחרו נושא</div></div>
   </div>
   <div class="mode-card" onclick="startGame('marathon')">
     <div class="mode-icon">&#128170;</div>
-    <div><div class="mode-label">מרתון 78</div><div class="mode-desc">כל השאלות - רק למי שבאמת רציני</div></div>
-  </div>
-  <div class="toggle-row">
-    <span class="toggle-label">טיימר (20 שניות לשאלה)</span>
-    <label class="toggle"><input type="checkbox" id="timerToggle"><span class="toggle-slider"></span></label>
+    <div><div class="mode-label">מרתון 78</div><div class="mode-desc">רק למי שרציני באמת</div></div>
   </div>
   <button class="btn-back" onclick="showScreen('leaderboardScreen')" style="margin-top:8px">&#127942; טבלת שיאים</button>
 </section>
@@ -447,7 +443,7 @@ function startGame(mode, cat) {
   state.mode = mode;
   state.cat = cat||null;
   state.idx = 0; state.score = 0; state.streak = 0; state.bestStreak = 0; state.correct = 0;
-  state.timer = mode==='quick' ? true : document.getElementById('timerToggle').checked;
+  state.timer = true;
   state.timerDuration = mode==='quick' ? 10 : 20;
   let pool;
   if(mode==='cat') {
