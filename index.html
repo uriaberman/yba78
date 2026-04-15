@@ -53,7 +53,7 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
 /* BUTTONS */
 .btn{display:block;width:100%;padding:14px 20px;border:none;border-radius:var(--radius);font-family:'Rubik',sans-serif;font-size:1.05rem;font-weight:600;cursor:pointer;transition:all .2s ease;touch-action:manipulation;text-align:center}
 .btn:active{transform:scale(.97)}
-.btn-primary{background:var(--green);color:#222;box-shadow:0 4px 15px rgba(182,200,68,.3)}
+.btn-primary{background:var(--green);color:#222;box-shadow:0 4px 15px rgba(182,200,68,.3);opacity:.9}
 .btn-primary:hover{box-shadow:0 6px 20px rgba(182,200,68,.4);transform:translateY(-1px)}
 .btn-secondary{background:var(--blue-dark);color:var(--white)}
 .btn-outline{background:var(--blue-dark);border:2px solid var(--blue-dark);color:var(--white);opacity:.9}
@@ -262,8 +262,8 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
 
 </div>
 
-<button class="music-btn" id="musicBtn" onclick="toggleMusic()" title="מוזיקה">&#127925;</button>
-<audio id="bgMusic" src="hatikvah-game.mp3" loop preload="auto"></audio>
+<button class="music-btn" id="musicBtn" onclick="toggleMusic()" title="מוזיקה"><span id="musicIcon">&#128264;</span></button>
+<audio id="bgMusic" src="hava-nagila-game.mp3" loop preload="auto"></audio>
 <div class="overlay" id="overlay"></div>
 <div class="streak-popup" id="streakPopup"><div class="streak-num" id="streakNum"></div><div class="streak-msg" id="streakMsg"></div></div>
 <canvas id="confetti-canvas"></canvas>
@@ -762,15 +762,16 @@ function playWrongSound(){
 
 // ===== BACKGROUND MUSIC =====
 const bgMusic = document.getElementById('bgMusic');
-bgMusic.volume = 0.15;
+bgMusic.volume = 0.08;
 let musicPlaying = false;
 function toggleMusic(){
-  if(musicPlaying){bgMusic.pause();musicPlaying=false;document.getElementById('musicBtn').classList.add('muted');}
-  else{bgMusic.play().then(()=>{musicPlaying=true;document.getElementById('musicBtn').classList.remove('muted');}).catch(()=>{});}
+  const icon=document.getElementById('musicIcon');
+  if(musicPlaying){bgMusic.pause();musicPlaying=false;icon.innerHTML='&#128263;';document.getElementById('musicBtn').classList.add('muted');}
+  else{bgMusic.play().then(()=>{musicPlaying=true;icon.innerHTML='&#128266;';document.getElementById('musicBtn').classList.remove('muted');}).catch(()=>{});}
 }
 // Auto-start music on first user interaction
 document.addEventListener('click',function startMusic(){
-  if(!musicPlaying){bgMusic.play().then(()=>{musicPlaying=true;document.getElementById('musicBtn').classList.remove('muted');}).catch(()=>{});}
+  if(!musicPlaying){bgMusic.play().then(()=>{musicPlaying=true;document.getElementById('musicIcon').innerHTML='&#128266;';document.getElementById('musicBtn').classList.remove('muted');}).catch(()=>{});}
   document.removeEventListener('click',startMusic);
 },{once:true});
 
