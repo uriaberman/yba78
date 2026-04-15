@@ -96,11 +96,11 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
 
 /* QUESTION SCREEN */
 #question{padding:16px 20px;gap:0}
-.q-home{position:absolute;top:14px;left:14px;background:var(--gray-bg);border:none;font-size:1.1rem;cursor:pointer;color:var(--blue);z-index:3;padding:5px 9px;border-radius:8px;transition:background .2s}
-.q-home:active{background:var(--gray-border)}
-.q-top{display:flex;align-items:center;margin-bottom:8px;direction:rtl;padding:0 0 0 0}
+.q-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;direction:rtl}
 .q-counter{font-size:.8rem;font-weight:600;color:var(--blue-dark)}
-.q-score{font-size:.85rem;font-weight:700;color:var(--purple);margin-right:auto;padding-left:50px}
+.q-score{font-size:.85rem;font-weight:700;color:var(--purple)}
+.q-back-btn{background:none;border:1px solid var(--gray-border);font-family:'Rubik',sans-serif;font-size:.8rem;color:var(--blue);cursor:pointer;padding:6px 14px;border-radius:20px;margin:8px auto 0;display:block;transition:all .2s}
+.q-back-btn:active{background:var(--gray-bg)}
 .q-streak{font-size:.75rem;background:var(--green);color:#222;padding:2px 8px;border-radius:10px;font-weight:600;display:none}
 .q-streak.show{display:inline-block;animation:pop .3s ease}
 @keyframes pop{0%{transform:scale(.5)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
@@ -209,7 +209,6 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
 
 <!-- QUESTION -->
 <section class="screen" id="question">
-  <button class="q-home" onclick="confirmExit()" title="חזרה למסך הבית">&#8962;</button>
   <div class="q-top">
     <span class="q-counter" id="qCounter"></span>
     <span class="q-streak" id="qStreak"></span>
@@ -225,6 +224,7 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
   <div class="q-options" id="qOptions"></div>
   <div class="q-feedback" id="qFeedback"></div>
   <div style="flex:1"></div>
+  <button class="q-back-btn" onclick="confirmExit()">&#8592; חזרה לתפריט הראשי</button>
   <img src="https://yba.org.il/wp-content/uploads/2021/02/Untitled-2.png" alt="" style="width:60px;height:auto;opacity:.7;margin:8px auto 0;display:block;filter:none">
 </section>
 
