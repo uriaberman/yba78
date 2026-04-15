@@ -29,18 +29,29 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
 .screen.active{opacity:1;pointer-events:auto;transform:translateX(0)}
 .screen.slide-out{opacity:0;transform:translateX(30px)}
 
+/* GARLAND - flag chain decoration */
+.garland{position:absolute;top:0;left:0;right:0;height:32px;display:flex;justify-content:center;gap:0;overflow:hidden;opacity:0;animation:fadeIn .5s .2s ease forwards;z-index:2}
+.flag{width:18px;height:14px;clip-path:polygon(0 0,100% 0,50% 100%);flex-shrink:0}
+.flag:nth-child(odd){background:var(--blue-dark)}
+.flag:nth-child(even){background:var(--white);border:1px solid var(--blue-dark)}
+.flag:nth-child(3n){background:var(--purple)}
+.flag:nth-child(5n){background:var(--green)}
+
 /* SPLASH */
-#splash{justify-content:center;align-items:center;text-align:center;background:linear-gradient(135deg,var(--white) 0%,#f5f0f8 50%,#eef5ff 100%)}
-.splash-logo{width:110px;height:auto;opacity:0;transform:scale(.7);animation:logoIn .8s .3s ease forwards}
+#splash{justify-content:center;align-items:center;text-align:center;background:linear-gradient(135deg,var(--white) 0%,#f5f0f8 50%,#eef5ff 100%);gap:4px}
+.splash-78{font-size:4.5rem;font-weight:800;color:var(--blue-dark);opacity:.08;position:absolute;top:8%;left:50%;transform:translateX(-50%);letter-spacing:-4px;animation:num78 1s .5s ease forwards}
+@keyframes num78{to{opacity:.12}}
+.splash-logo{width:100px;height:auto;opacity:0;transform:scale(.7);animation:logoIn .8s .3s ease forwards;position:relative;z-index:1}
 @keyframes logoIn{to{opacity:1;transform:scale(1)}}
-.splash-title{font-size:1.8rem;font-weight:800;color:var(--blue-dark);margin-top:16px;opacity:0;transform:translateY(20px);animation:slideUp .5s 1s ease forwards}
-.splash-sub{font-size:1rem;color:var(--purple);margin-top:6px;font-weight:500;opacity:0;animation:fadeIn .4s 1.4s ease forwards}
-.splash-deco{position:absolute;font-size:1.5rem;opacity:0;animation:decoIn .6s ease forwards}
-.splash-deco:nth-child(1){top:12%;right:10%;animation-delay:1.6s}
-.splash-deco:nth-child(2){top:16%;left:8%;animation-delay:1.8s}
-.splash-deco:nth-child(3){bottom:22%;right:12%;animation-delay:2s}
-.splash-deco:nth-child(4){bottom:18%;left:10%;animation-delay:2.2s}
-@keyframes decoIn{to{opacity:.3}}
+.splash-title{font-size:1.7rem;font-weight:800;color:var(--blue-dark);opacity:0;transform:translateY(20px);animation:slideUp .5s .9s ease forwards}
+.splash-year{font-size:.85rem;font-weight:600;color:var(--green);opacity:0;animation:fadeIn .4s 1.2s ease forwards;background:rgba(182,200,68,.12);padding:4px 14px;border-radius:20px;display:inline-block}
+.splash-sub{font-size:.95rem;color:var(--purple);font-weight:500;opacity:0;animation:fadeIn .4s 1.4s ease forwards}
+.splash-deco{position:absolute;font-size:1.3rem;opacity:0;animation:decoIn .6s ease forwards}
+.splash-deco:nth-child(2){top:14%;right:8%;animation-delay:1.6s}
+.splash-deco:nth-child(3){top:18%;left:6%;animation-delay:1.8s}
+.splash-deco:nth-child(4){bottom:20%;right:10%;animation-delay:2s}
+.splash-deco:nth-child(5){bottom:16%;left:8%;animation-delay:2.2s}
+@keyframes decoIn{to{opacity:.25}}
 @keyframes slideUp{to{opacity:1;transform:translateY(0)}}
 @keyframes fadeIn{to{opacity:1}}
 
@@ -59,7 +70,7 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
 @keyframes glow{0%,100%{box-shadow:0 4px 15px rgba(182,200,68,.3)}50%{box-shadow:0 4px 25px rgba(182,200,68,.6)}}
 
 /* MODE SELECT */
-#mode{justify-content:center;gap:16px}
+#mode{justify-content:center;gap:12px;padding-top:40px}
 .mode-title{font-size:1.5rem;font-weight:700;color:var(--blue-dark);text-align:center;margin-bottom:8px}
 .mode-card{background:var(--white);border:2px solid var(--gray-border);border-radius:var(--radius);padding:20px;cursor:pointer;transition:all .25s ease;display:flex;align-items:center;gap:14px}
 .mode-card:hover,.mode-card:active{border-color:var(--blue);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,84,131,.1)}
@@ -76,7 +87,7 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
 .toggle input:checked+.toggle-slider:before{right:25px}
 
 /* CATEGORY SELECT */
-#categories{justify-content:center;gap:12px}
+#categories{justify-content:center;gap:10px;padding-top:40px}
 .cat-title{font-size:1.4rem;font-weight:700;color:var(--blue-dark);text-align:center;margin-bottom:4px}
 .cat-grid{display:flex;flex-direction:column;gap:10px}
 .cat-card{display:flex;align-items:center;gap:14px;padding:16px;border-radius:var(--radius);border:2px solid var(--gray-border);cursor:pointer;transition:all .25s ease;opacity:0;transform:translateY(15px)}
@@ -116,10 +127,10 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
 .q-opt.wrong{border-color:var(--wrong);background:rgba(231,76,60,.08);animation:shake .4s ease}
 .q-opt.wrong .letter{background:var(--wrong);color:var(--white)}
 @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(6px)}40%{transform:translateX(-6px)}60%{transform:translateX(4px)}80%{transform:translateX(-2px)}}
-.q-feedback{text-align:center;font-size:.95rem;font-weight:600;padding:10px;border-radius:var(--radius-sm);margin-top:8px;opacity:0;transform:translateY(10px);transition:all .3s ease}
+.q-feedback{text-align:center;font-size:1rem;font-weight:600;padding:12px 16px;border-radius:var(--radius-sm);margin-top:auto;opacity:0;transform:translateY(10px);transition:all .3s ease}
 .q-feedback.show{opacity:1;transform:translateY(0)}
-.q-feedback.correct-fb{color:var(--correct);background:rgba(39,174,96,.08)}
-.q-feedback.wrong-fb{color:var(--wrong);background:rgba(231,76,60,.08)}
+.q-feedback.correct-fb{color:var(--correct);background:rgba(39,174,96,.12);border:1px solid rgba(39,174,96,.2)}
+.q-feedback.wrong-fb{color:var(--wrong);background:rgba(231,76,60,.1);border:1px solid rgba(231,76,60,.15)}
 
 /* STREAK POPUP */
 .streak-popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);background:var(--white);border-radius:20px;padding:30px 40px;text-align:center;z-index:100;box-shadow:0 20px 60px rgba(0,0,0,.2);opacity:0;transition:all .4s cubic-bezier(.175,.885,.32,1.275)}
@@ -156,22 +167,30 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
 
 <!-- SPLASH -->
 <section class="screen active" id="splash">
+  <div class="garland" id="garland"></div>
+  <div class="splash-78">78</div>
   <span class="splash-deco">&#10024;</span>
   <span class="splash-deco">&#11088;</span>
   <span class="splash-deco">&#10024;</span>
   <span class="splash-deco">&#11088;</span>
   <img class="splash-logo" src="https://yba.org.il/wp-content/uploads/2021/02/Untitled-2.png" alt="מרכז ישיבות ואולפנות בני עקיבא" onerror="this.style.display='none'">
   <h1 class="splash-title">חידון יום העצמאות</h1>
+  <span class="splash-year">78 שנים למדינת ישראל</span>
   <p class="splash-sub">78 שאלות. 5 קטגוריות. כמה באמת יודעים?</p>
-  <button class="btn btn-primary btn-start glow" onclick="showScreen('mode')" style="max-width:260px;margin-top:24px">יאללה, מתחילים!</button>
+  <button class="btn btn-primary btn-start glow" onclick="showScreen('mode')" style="max-width:260px;margin-top:16px">יאללה, מתחילים!</button>
 </section>
 
 <!-- MODE SELECT -->
 <section class="screen" id="mode">
+  <div class="garland"></div>
   <h2 class="mode-title">איך רוצים לשחק?</h2>
   <div class="mode-card" onclick="startGame('all')">
-    <div class="mode-icon">&#127942;</div>
-    <div><div class="mode-label">משחק מלא</div><div class="mode-desc">כל 78 השאלות מעורבבות</div></div>
+    <div class="mode-icon">&#127922;</div>
+    <div><div class="mode-label">ערבוב מלא</div><div class="mode-desc">כל 78 השאלות בסדר אקראי</div></div>
+  </div>
+  <div class="mode-card" onclick="startGame('seq')">
+    <div class="mode-icon">&#128220;</div>
+    <div><div class="mode-label">רציף - מההתחלה לסוף</div><div class="mode-desc">כל 78 השאלות לפי הסדר</div></div>
   </div>
   <div class="mode-card" onclick="showScreen('categories')">
     <div class="mode-icon">&#128218;</div>
@@ -185,6 +204,7 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
 
 <!-- CATEGORY SELECT -->
 <section class="screen" id="categories">
+  <div class="garland"></div>
   <h2 class="cat-title">בחירת קטגוריה</h2>
   <div class="cat-grid" id="catGrid"></div>
   <button class="btn-back" onclick="showScreen('mode')">&#8594; חזרה</button>
@@ -233,7 +253,7 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
 // ===== QUESTIONS DATA =====
 const CATS = {
   torah:      {name:'תורה ותנ"ך',   icon:'\u{1F4DC}', color:'#A471AD', tag:'מהפסוק ועד ההלכה'},
-  zionism:    {name:'ציונות',       icon:'\u{1F1EE}\u{1F1F1}', color:'#005483', tag:'ממגילת העצמאות עד היום'},
+  zionism:    {name:'ציונות',       icon:'\u{1F3F5}\u{FE0F}', color:'#005483', tag:'ממגילת העצמאות עד היום'},
   science:    {name:'מדעים',        icon:'\u{1F52C}', color:'#B6C844', tag:'תגליות שישראל נתנה לעולם'},
   innovation: {name:'חדשנות',       icon:'\u{1F4A1}', color:'#00ABDF', tag:'סטארט-אפ ניישן בפעולה'},
   excellence: {name:'מצוינות',      icon:'\u{2B50}',  color:'#A471AD', tag:'הישגים ישראליים שצריך להכיר'}
@@ -402,9 +422,16 @@ function startGame(mode, cat) {
   state.cat = cat||null;
   state.idx = 0; state.score = 0; state.streak = 0; state.bestStreak = 0; state.correct = 0;
   state.timer = document.getElementById('timerToggle').checked;
-  let pool = mode==='all' ? [...Q] : Q.filter(q=>q.c===cat);
-  // shuffle questions
-  for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}
+  let pool;
+  if(mode==='seq') {
+    pool = [...Q]; // sequential - original order
+  } else if(mode==='cat') {
+    pool = Q.filter(q=>q.c===cat);
+    for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}
+  } else {
+    pool = [...Q]; // all - shuffled
+    for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}
+  }
   state.questions = pool;
   showScreen('question');
   setTimeout(()=>loadQuestion(),100);
@@ -594,7 +621,7 @@ function showResults(){
 // ===== SHARE =====
 function shareWA(){
   const pct = Math.round((state.correct/state.questions.length)*100);
-  const text = `\u{1F1EE}\u{1F1F1} שיחקתי בחידון יום העצמאות של מרכז ישיבות ואולפנות בני עקיבא!\n\nעניתי נכון על ${state.correct} מתוך ${state.questions.length} שאלות (${pct}%)\nניקוד: ${state.score} נקודות\n\nמצליחים לנצח?\n\u{1F449} ${location.href}`;
+  const text = `\u{2728} חידון יום העצמאות - 78 שנים למדינה!\n\nשיחקתי בחידון של מרכז ישיבות ואולפנות בני עקיבא\nעניתי נכון על ${state.correct} מתוך ${state.questions.length} שאלות (${pct}%)\nניקוד: ${state.score} נקודות\n\nמצליחים לנצח?\n\u{1F449} ${location.href}`;
   if(navigator.share){
     navigator.share({title:'חידון יום העצמאות',text});
   } else {
@@ -605,6 +632,11 @@ function shareWA(){
 function replay(){
   startGame(state.mode, state.cat);
 }
+
+// ===== GARLANDS =====
+document.querySelectorAll('.garland').forEach(g=>{
+  for(let i=0;i<24;i++){const f=document.createElement('div');f.className='flag';g.appendChild(f);}
+});
 
 // ===== FALLBACK: ensure start button visible =====
 setTimeout(()=>{const b=document.querySelector('.btn-start');if(b)b.style.opacity='1';},2500);
