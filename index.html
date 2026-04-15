@@ -193,7 +193,7 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
   <h2 class="mode-title">בואו נשחק!</h2>
   <div class="mode-card" onclick="startGame('quick')">
     <div class="mode-icon">&#9889;</div>
-    <div><div class="mode-label">סיבוב מהיר</div><div class="mode-desc">30 שאלות, 10 שניות לכל שאלה</div></div>
+    <div><div class="mode-label">סיבוב מהיר</div><div class="mode-desc">20 שאלות, 10 שניות לכל שאלה</div></div>
   </div>
   <div class="mode-card" onclick="startGame('challenge')">
     <div class="mode-icon">&#127942;</div>
@@ -466,7 +466,7 @@ function startGame(mode, cat) {
   } else {
     pool = [...Q];
     shuffle(pool);
-    if(mode==='quick') pool = pool.slice(0,30);
+    if(mode==='quick') pool = pool.slice(0,20);
     else if(mode==='challenge') pool = pool.slice(0,25);
   }
   state.questions = pool;
