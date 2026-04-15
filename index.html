@@ -39,7 +39,7 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
 @keyframes flagWave{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-3px) rotate(3deg)}}
 
 /* Background pattern - Israeli flags (proper: white bg, two blue stripes, Star of David) */
-.il-pattern{position:absolute;inset:0;opacity:.045;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='56' viewBox='0 0 80 56'%3E%3Crect width='80' height='56' fill='%23ffffff'/%3E%3Crect x='0' y='6' width='80' height='6' fill='%230038b8'/%3E%3Crect x='0' y='44' width='80' height='6' fill='%230038b8'/%3E%3Cg transform='translate(40,28)'%3E%3Cpolygon points='0,-12 10.4,6 -10.4,6' fill='none' stroke='%230038b8' stroke-width='2.5'/%3E%3Cpolygon points='0,12 10.4,-6 -10.4,-6' fill='none' stroke='%230038b8' stroke-width='2.5'/%3E%3C/g%3E%3C/svg%3E");background-size:90px 64px;pointer-events:none;z-index:0}
+.il-pattern{position:absolute;inset:0;opacity:.06;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='70' viewBox='0 0 100 70'%3E%3Crect width='100' height='70' fill='%23ffffff'/%3E%3Crect x='5' y='8' width='90' height='8' fill='%230038b8' rx='1'/%3E%3Crect x='5' y='54' width='90' height='8' fill='%230038b8' rx='1'/%3E%3Cg transform='translate(50,35)'%3E%3Cpolygon points='0,-14 12.1,7 -12.1,7' fill='none' stroke='%230038b8' stroke-width='2.5'/%3E%3Cpolygon points='0,14 12.1,-7 -12.1,-7' fill='none' stroke='%230038b8' stroke-width='2.5'/%3E%3C/g%3E%3C/svg%3E");background-size:110px 80px;pointer-events:none;z-index:0}
 
 /* SPLASH */
 #splash{justify-content:center;align-items:center;text-align:center;background:linear-gradient(135deg,var(--white) 0%,#f5f0f8 50%,#eef5ff 100%);gap:4px}
@@ -98,13 +98,13 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
 #question{padding:16px 20px;gap:0}
 .q-home{position:absolute;top:12px;left:12px;background:none;border:none;font-size:1.2rem;cursor:pointer;color:var(--blue);z-index:3;padding:4px 8px;border-radius:8px;transition:background .2s}
 .q-home:active{background:var(--gray-bg)}
-.q-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.q-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;direction:rtl}
 .q-counter{font-size:.8rem;font-weight:600;color:var(--blue-dark)}
-.q-score{font-size:.85rem;font-weight:700;color:var(--purple);display:flex;align-items:center;gap:4px;direction:ltr}
+.q-score{font-size:.85rem;font-weight:700;color:var(--purple)}
 .q-streak{font-size:.75rem;background:var(--green);color:#222;padding:2px 8px;border-radius:10px;font-weight:600;display:none}
 .q-streak.show{display:inline-block;animation:pop .3s ease}
 @keyframes pop{0%{transform:scale(.5)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
-.progress-bar{width:100%;height:6px;background:var(--gray-border);border-radius:3px;margin-bottom:12px;overflow:hidden;direction:rtl}
+.progress-bar{width:100%;height:6px;background:var(--gray-border);border-radius:3px;margin-bottom:12px;overflow:hidden;direction:ltr}
 .progress-fill{height:100%;background:linear-gradient(90deg,var(--blue-dark),var(--blue-light));border-radius:3px;transition:width .4s ease;width:0}
 .q-timer{width:56px;height:56px;margin:0 auto 8px;position:relative;display:none}
 .q-timer.show{display:block}
@@ -124,7 +124,7 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
 .q-opt.wrong{border-color:var(--wrong);background:rgba(231,76,60,.08);animation:shake .4s ease}
 .q-opt.wrong .letter{background:var(--wrong);color:var(--white)}
 @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(6px)}40%{transform:translateX(-6px)}60%{transform:translateX(4px)}80%{transform:translateX(-2px)}}
-.q-feedback{text-align:center;font-size:1rem;font-weight:600;padding:12px 16px;border-radius:var(--radius-sm);margin-top:12px;opacity:0;transform:translateY(10px);transition:all .3s ease}
+.q-feedback{text-align:center;font-size:1.05rem;font-weight:600;padding:14px 16px;border-radius:var(--radius-sm);margin-top:10px;opacity:0;transform:translateY(10px);transition:all .3s ease}
 .q-feedback.show{opacity:1;transform:translateY(0)}
 .q-feedback.correct-fb{color:var(--correct);background:rgba(39,174,96,.12);border:1px solid rgba(39,174,96,.2)}
 .q-feedback.wrong-fb{color:var(--wrong);background:rgba(231,76,60,.1);border:1px solid rgba(231,76,60,.15)}
@@ -212,8 +212,8 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
   <button class="q-home" onclick="confirmExit()" title="חזרה למסך הבית">&#8962;</button>
   <div class="q-top">
     <span class="q-counter" id="qCounter"></span>
-    <span class="q-score"><span style="font-weight:500;color:#888;font-size:.75rem">ניקוד: </span><span id="qScore">0</span></span>
     <span class="q-streak" id="qStreak"></span>
+    <span class="q-score">ניקוד: <span id="qScore">0</span></span>
   </div>
   <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
   <div class="q-timer" id="qTimer">
@@ -224,7 +224,8 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
   <div class="q-text" id="qText"></div>
   <div class="q-options" id="qOptions"></div>
   <div class="q-feedback" id="qFeedback"></div>
-  <img src="https://yba.org.il/wp-content/uploads/2021/02/Untitled-2.png" alt="" style="width:50px;height:auto;opacity:.25;margin:8px auto 0;display:block">
+  <div style="flex:1"></div>
+  <img src="https://yba.org.il/wp-content/uploads/2021/02/Untitled-2.png" alt="" style="width:60px;height:auto;opacity:.7;margin:8px auto 0;display:block;filter:none">
 </section>
 
 <!-- RESULTS -->
@@ -284,7 +285,7 @@ const Q = [
 {c:'torah',q:'מה פירוש "תורה ועבודה"?',o:['לימוד תורה בלבד','מושג תלמודי','שילוב תורה עם עבודה יצרנית','רעיון גלותי'],a:2},
 {c:'torah',q:'מי היה הרב הראשי האשכנזי הראשון של מדינת ישראל?',o:['הרב שלמה גורן זצ"ל','הרב יצחק הרצוג זצ"ל','הרב אברהם יצחק הכהן קוק זצ"ל','הרב מאיר עוזיאל זצ"ל'],a:1},
 {c:'torah',q:'מהי מצוות יישוב ארץ ישראל לפי הרמב"ן?',o:['מצווה מדרבנן','איסור מגורים בחו"ל','מצווה חקלאית','לכבוש ולשבת בארץ ישראל'],a:3},
-{c:'torah',q:'באיזו פרשה נשלחו המרגלים לתור את הארץ?',o:['בהעלותך','ועננו','שלח לך','חוקת'],a:2},
+{c:'torah',q:'באיזו פרשה נשלחו המרגלים לתור את הארץ?',o:['בהעלותך','ואתחנן','שלח לך','חוקת'],a:2},
 {c:'torah',q:'איזו ישיבה ייסד הרב אברהם יצחק הכהן קוק זצ"ל בירושלים?',o:['ישיבת הקו','ישיבת מרכז הרב','ישיבת חברון','ישיבת הר עציון'],a:1},
 {c:'torah',q:'מי חיבר את ספר הכוזרי?',o:['הרמב"ם','מיכה גודמן','מלך כוזר','ר\' יהודה הלוי'],a:3},
 {c:'torah',q:'באיזה תאריך חל יום ירושלים?',o:['י"ז בתמוז','כ"ח באייר','א\' בתשרי','כ\' בתמוז'],a:1},
