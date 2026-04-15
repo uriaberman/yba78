@@ -64,6 +64,18 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
 .glow{animation:glow 2s 3s ease-in-out infinite}
 @keyframes glow{0%,100%{box-shadow:0 4px 15px rgba(182,200,68,.3)}50%{box-shadow:0 4px 25px rgba(182,200,68,.6)}}
 
+/* MINI ISRAELI FLAG - waving at bottom */
+.il-flag-wrap{position:fixed;bottom:12px;right:14px;z-index:50;pointer-events:none}
+.il-flag-pole{width:3px;height:42px;background:linear-gradient(to bottom,#888,#aaa);border-radius:1px;position:relative}
+.il-flag-pole::before{content:'';position:absolute;top:-4px;left:50%;transform:translateX(-50%);width:7px;height:7px;background:gold;border-radius:50%}
+.il-flag{position:absolute;top:2px;right:3px;width:34px;height:24px;background:#fff;border:1px solid #ddd;border-radius:1px;overflow:hidden;transform-origin:left center;animation:flagWaveReal 2.5s ease-in-out infinite}
+.il-flag::before,.il-flag::after{content:'';position:absolute;left:0;right:0;height:5px;background:#0038b8}
+.il-flag::before{top:3px}
+.il-flag::after{bottom:3px}
+.il-flag-star{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:10px;height:10px}
+.il-flag-star svg{width:100%;height:100%}
+@keyframes flagWaveReal{0%,100%{transform:skewY(0deg) scaleX(1)}25%{transform:skewY(-2deg) scaleX(.97)}50%{transform:skewY(1deg) scaleX(.99)}75%{transform:skewY(-1deg) scaleX(.98)}}
+
 /* MODE SELECT */
 #mode{justify-content:center;gap:12px;padding-top:40px}
 .mode-title{font-size:1.5rem;font-weight:700;color:var(--blue-dark);text-align:center;margin-bottom:8px}
@@ -180,6 +192,7 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
 <!-- MODE SELECT -->
 <section class="screen" id="mode">
   <div class="garland"></div>
+  <div style="text-align:center;font-size:.75rem;font-weight:600;color:var(--purple);letter-spacing:1px;margin-bottom:2px">חידון יום העצמאות</div>
   <h2 class="mode-title">בואו נשחק!</h2>
   <div class="mode-card" onclick="startGame('quick')">
     <div class="mode-icon">&#9889;</div>
@@ -258,6 +271,13 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
 
 </div>
 
+<div class="il-flag-wrap">
+  <div class="il-flag-pole">
+    <div class="il-flag">
+      <div class="il-flag-star"><svg viewBox="0 0 20 20"><polygon points="10,2 12.5,7.5 18,8 13.5,12 15,18 10,15 5,18 6.5,12 2,8 7.5,7.5" fill="none" stroke="#0038b8" stroke-width="1.5"/></svg></div>
+    </div>
+  </div>
+</div>
 <button class="music-btn" id="musicBtn" onclick="toggleMusic()" title="מוזיקה"><span id="musicIcon">&#128264;</span></button>
 <audio id="bgMusic" src="hava-nagila.mp3" loop preload="auto"></audio>
 <div class="overlay" id="overlay"></div>
