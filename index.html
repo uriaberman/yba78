@@ -759,14 +759,27 @@ function closeLbPopup(){
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 function playCorrectSound(){
   try{
-    const o=audioCtx.createOscillator(),g=audioCtx.createGain();
-    o.connect(g);g.connect(audioCtx.destination);
-    o.type='sine';o.frequency.setValueAtTime(523,audioCtx.currentTime);
-    o.frequency.setValueAtTime(659,audioCtx.currentTime+.1);
-    o.frequency.setValueAtTime(784,audioCtx.currentTime+.2);
-    g.gain.setValueAtTime(.15,audioCtx.currentTime);
-    g.gain.exponentialRampToValueAtTime(.01,audioCtx.currentTime+.4);
-    o.start(audioCtx.currentTime);o.stop(audioCtx.currentTime+.4);
+    const t=audioCtx.currentTime;
+    // Bright rising arpeggio - 4 notes
+    const notes=[523,659,784,1047];
+    notes.forEach((freq,i)=>{
+      const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+      o.connect(g);g.connect(audioCtx.destination);
+      o.type='triangle';
+      o.frequency.setValueAtTime(freq,t+i*.08);
+      g.gain.setValueAtTime(.2,t+i*.08);
+      g.gain.exponentialRampToValueAtTime(.01,t+i*.08+.25);
+      o.start(t+i*.08);o.stop(t+i*.08+.25);
+    });
+    // Sparkle layer
+    const o2=audioCtx.createOscillator(),g2=audioCtx.createGain();
+    o2.connect(g2);g2.connect(audioCtx.destination);
+    o2.type='sine';
+    o2.frequency.setValueAtTime(1568,t+.15);
+    o2.frequency.setValueAtTime(2093,t+.3);
+    g2.gain.setValueAtTime(.08,t+.15);
+    g2.gain.exponentialRampToValueAtTime(.01,t+.45);
+    o2.start(t+.15);o2.stop(t+.45);
   }catch(e){}
 }
 function playWrongSound(){
