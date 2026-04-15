@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>חידון יום העצמאות | מרכז ישיבות ואולפנות בני עקיבא</title>
+<meta name="description" content="78 שאלות, 5 קטגוריות - חידון יום העצמאות של מרכז ישיבות ואולפנות בני עקיבא">
+<meta property="og:title" content="חידון יום העצמאות | מרכז ישיבות ואולפנות בני עקיבא">
+<meta property="og:description" content="78 שאלות. 5 קטגוריות. כמה באמת יודעים?">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--blue-dark:#005483;--blue:#0076BB;--blue-light:#00ABDF;
+--purple:#A471AD;--green:#B6C844;
+--white:#FFFFFF;--gray-bg:#F2F2F6;--gray-border:#D4D4DF;--gray-text:#444;
+--correct:#27AE60;--wrong:#E74C3C;
+--radius:14px;--radius-sm:10px;
+}
+html,body{height:100%;font-family:'Rubik',sans-serif;background:var(--gray-bg);color:var(--gray-text);overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
+.app{width:100%;max-width:460px;min-height:100dvh;background:var(--white);position:relative;overflow:hidden;box-shadow:0 0 40px rgba(0,0,0,.08)}
+@media(min-width:500px){body{background:var(--gray-bg);padding:16px}.app{min-height:calc(100dvh - 32px);border-radius:24px;max-height:900px}}
+
+/* SCREENS */
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;padding:24px;opacity:0;pointer-events:none;transform:translateX(-30px);transition:all .35s ease}
+.screen.active{opacity:1;pointer-events:auto;transform:translateX(0)}
+.screen.slide-out{opacity:0;transform:translateX(30px)}
+
+/* SPLASH */
+#splash{justify-content:center;align-items:center;text-align:center;background:linear-gradient(135deg,var(--white) 0%,#f5f0f8 50%,#eef5ff 100%)}
+.splash-logo{width:140px;height:auto;opacity:0;transform:scale(.7);animation:logoIn .8s .3s ease forwards}
+@keyframes logoIn{to{opacity:1;transform:scale(1)}}
+.splash-title{font-size:2rem;font-weight:800;color:var(--blue-dark);margin-top:20px;opacity:0;transform:translateY(20px);animation:slideUp .5s 1s ease forwards}
+.splash-sub{font-size:1.05rem;color:var(--purple);margin-top:8px;font-weight:500;opacity:0;animation:fadeIn .4s 1.4s ease forwards}
+.splash-deco{position:absolute;font-size:2rem;opacity:0;animation:decoIn .6s ease forwards}
+.splash-deco:nth-child(1){top:15%;right:10%;animation-delay:1.6s}
+.splash-deco:nth-child(2){top:20%;left:8%;animation-delay:1.8s}
+.splash-deco:nth-child(3){bottom:25%;right:12%;animation-delay:2s}
+.splash-deco:nth-child(4){bottom:20%;left:10%;animation-delay:2.2s}
+@keyframes decoIn{to{opacity:.3}}
+@keyframes slideUp{to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{to{opacity:1}}
+
+/* BUTTONS */
+.btn{display:block;width:100%;padding:14px 20px;border:none;border-radius:var(--radius);font-family:'Rubik',sans-serif;font-size:1.05rem;font-weight:600;cursor:pointer;transition:all .2s ease;touch-action:manipulation;text-align:center}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:var(--green);color:#222;box-shadow:0 4px 15px rgba(182,200,68,.3)}
+.btn-primary:hover{box-shadow:0 6px 20px rgba(182,200,68,.4);transform:translateY(-1px)}
+.btn-secondary{background:var(--blue-dark);color:var(--white)}
+.btn-outline{background:transparent;border:2px solid var(--blue-dark);color:var(--blue-dark)}
+.btn-wa{background:#25D366;color:var(--white)}
+.btn-start{opacity:0;animation:btnPulse .6s 2.4s ease forwards}
+@keyframes btnPulse{0%{opacity:0;transform:scale(.9)}60%{opacity:1;transform:scale(1.03)}100%{opacity:1;transform:scale(1)}}
+.glow{animation:glow 2s 3s ease-in-out infinite}
+@keyframes glow{0%,100%{box-shadow:0 4px 15px rgba(182,200,68,.3)}50%{box-shadow:0 4px 25px rgba(182,200,68,.6)}}
+
+/* MODE SELECT */
+#mode{justify-content:center;gap:16px}
+.mode-title{font-size:1.5rem;font-weight:700;color:var(--blue-dark);text-align:center;margin-bottom:8px}
+.mode-card{background:var(--white);border:2px solid var(--gray-border);border-radius:var(--radius);padding:20px;cursor:pointer;transition:all .25s ease;display:flex;align-items:center;gap:14px}
+.mode-card:hover,.mode-card:active{border-color:var(--blue);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,84,131,.1)}
+.mode-icon{font-size:2rem;width:50px;text-align:center;flex-shrink:0}
+.mode-label{font-size:1.1rem;font-weight:600;color:var(--blue-dark)}
+.mode-desc{font-size:.85rem;color:#888;margin-top:2px}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--gray-bg);border-radius:var(--radius-sm);margin-top:4px}
+.toggle-label{font-size:.9rem;font-weight:500;color:var(--gray-text)}
+.toggle{position:relative;width:48px;height:26px;cursor:pointer}
+.toggle input{display:none}
+.toggle-slider{position:absolute;inset:0;background:var(--gray-border);border-radius:13px;transition:.3s}
+.toggle-slider:before{content:'';position:absolute;width:20px;height:20px;background:var(--white);border-radius:50%;top:3px;right:3px;transition:.3s}
+.toggle input:checked+.toggle-slider{background:var(--green)}
+.toggle input:checked+.toggle-slider:before{right:25px}
+
+/* CATEGORY SELECT */
+#categories{justify-content:center;gap:12px}
+.cat-title{font-size:1.4rem;font-weight:700;color:var(--blue-dark);text-align:center;margin-bottom:4px}
+.cat-grid{display:flex;flex-direction:column;gap:10px}
+.cat-card{display:flex;align-items:center;gap:14px;padding:16px;border-radius:var(--radius);border:2px solid var(--gray-border);cursor:pointer;transition:all .25s ease;opacity:0;transform:translateY(15px)}
+.cat-card.show{opacity:1;transform:translateY(0)}
+.cat-card:hover,.cat-card:active{transform:translateY(-2px);box-shadow:0 4px 15px rgba(0,0,0,.08)}
+.cat-icon{font-size:1.8rem;width:44px;text-align:center;flex-shrink:0}
+.cat-name{font-size:1.05rem;font-weight:600}
+.cat-tag{font-size:.8rem;color:#888;margin-top:2px}
+.cat-count{margin-right:auto;margin-left:0;background:var(--gray-bg);padding:4px 10px;border-radius:20px;font-size:.75rem;font-weight:600;color:var(--blue-dark);flex-shrink:0}
+.btn-back{background:none;border:none;font-family:'Rubik',sans-serif;font-size:.9rem;color:var(--blue);cursor:pointer;padding:8px;align-self:center;margin-top:4px}
+
+/* QUESTION SCREEN */
+#question{padding:16px 20px;gap:0}
+.q-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.q-counter{font-size:.8rem;font-weight:600;color:var(--blue-dark)}
+.q-score{font-size:.85rem;font-weight:700;color:var(--purple);display:flex;align-items:center;gap:4px}
+.q-streak{font-size:.75rem;background:var(--green);color:#222;padding:2px 8px;border-radius:10px;font-weight:600;display:none}
+.q-streak.show{display:inline-block;animation:pop .3s ease}
+@keyframes pop{0%{transform:scale(.5)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
+.progress-bar{width:100%;height:6px;background:var(--gray-border);border-radius:3px;margin-bottom:12px;overflow:hidden;direction:rtl}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--blue-dark),var(--blue-light));border-radius:3px;transition:width .4s ease;width:0}
+.q-timer{width:56px;height:56px;margin:0 auto 8px;position:relative;display:none}
+.q-timer.show{display:block}
+.q-timer svg{transform:rotate(90deg)}
+.q-timer-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:700;color:var(--blue-dark)}
+.q-category{display:inline-block;padding:4px 12px;border-radius:20px;font-size:.7rem;font-weight:600;color:var(--white);margin-bottom:8px}
+.q-text{font-size:1.15rem;font-weight:600;color:var(--blue-dark);line-height:1.5;margin-bottom:16px;min-height:60px}
+.q-options{display:flex;flex-direction:column;gap:10px;flex:1}
+.q-opt{display:flex;align-items:center;gap:12px;padding:14px 16px;border:2px solid var(--gray-border);border-radius:var(--radius);cursor:pointer;transition:all .2s ease;touch-action:manipulation;min-height:52px;opacity:0;transform:translateY(10px)}
+.q-opt.show{opacity:1;transform:translateY(0)}
+.q-opt:active:not(.disabled){transform:scale(.98)}
+.q-opt.disabled{pointer-events:none}
+.q-opt .letter{width:30px;height:30px;border-radius:50%;background:var(--gray-bg);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;color:var(--blue-dark);flex-shrink:0;transition:all .2s}
+.q-opt .text{font-size:.95rem;line-height:1.4;flex:1}
+.q-opt.correct{border-color:var(--correct);background:rgba(39,174,96,.08)}
+.q-opt.correct .letter{background:var(--correct);color:var(--white)}
+.q-opt.wrong{border-color:var(--wrong);background:rgba(231,76,60,.08);animation:shake .4s ease}
+.q-opt.wrong .letter{background:var(--wrong);color:var(--white)}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(6px)}40%{transform:translateX(-6px)}60%{transform:translateX(4px)}80%{transform:translateX(-2px)}}
+.q-feedback{text-align:center;font-size:.95rem;font-weight:600;padding:10px;border-radius:var(--radius-sm);margin-top:8px;opacity:0;transform:translateY(10px);transition:all .3s ease}
+.q-feedback.show{opacity:1;transform:translateY(0)}
+.q-feedback.correct-fb{color:var(--correct);background:rgba(39,174,96,.08)}
+.q-feedback.wrong-fb{color:var(--wrong);background:rgba(231,76,60,.08)}
+
+/* STREAK POPUP */
+.streak-popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);background:var(--white);border-radius:20px;padding:30px 40px;text-align:center;z-index:100;box-shadow:0 20px 60px rgba(0,0,0,.2);opacity:0;transition:all .4s cubic-bezier(.175,.885,.32,1.275)}
+.streak-popup.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.streak-num{font-size:3rem;font-weight:800;color:var(--purple)}
+.streak-msg{font-size:1.1rem;font-weight:600;color:var(--blue-dark);margin-top:4px}
+
+/* RESULTS */
+#results{justify-content:center;align-items:center;text-align:center;gap:16px;overflow-y:auto}
+.result-circle{width:140px;height:140px;border-radius:50%;border:6px solid var(--purple);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto}
+.result-score{font-size:2.5rem;font-weight:800;color:var(--blue-dark)}
+.result-total{font-size:.9rem;color:#888;font-weight:500}
+.result-msg{font-size:1.15rem;font-weight:700;color:var(--purple);max-width:280px;line-height:1.4}
+.result-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%}
+.stat-box{background:var(--gray-bg);border-radius:var(--radius-sm);padding:12px;text-align:center}
+.stat-val{font-size:1.3rem;font-weight:700;color:var(--blue-dark)}
+.stat-label{font-size:.75rem;color:#888;margin-top:2px}
+.result-actions{display:flex;flex-direction:column;gap:10px;width:100%;margin-top:8px}
+
+/* CONFETTI */
+#confetti-canvas{position:fixed;inset:0;z-index:99;pointer-events:none}
+
+/* OVERLAY DIM */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:98;opacity:0;pointer-events:none;transition:opacity .3s}
+.overlay.show{opacity:1;pointer-events:auto}
+
+/* UTILS */
+.mt-8{margin-top:8px}.mt-16{margin-top:16px}
+.gap-8{gap:8px}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+
+<!-- SPLASH -->
+<section class="screen active" id="splash">
+  <span class="splash-deco">&#127470;&#127473;</span>
+  <span class="splash-deco">&#11088;</span>
+  <span class="splash-deco">&#127470;&#127473;</span>
+  <span class="splash-deco">&#11088;</span>
+  <img class="splash-logo" src="https://yba.org.il/wp-content/uploads/2021/02/Untitled-2.png" alt="מרכז ישיבות ואולפנות בני עקיבא" onerror="this.style.display='none'">
+  <h1 class="splash-title">חידון יום העצמאות</h1>
+  <p class="splash-sub">78 שאלות. 5 קטגוריות. כמה באמת יודעים?</p>
+  <button class="btn btn-primary btn-start glow mt-16" onclick="showScreen('mode')" style="max-width:260px">יאללה, מתחילים!</button>
+</section>
+
+<!-- MODE SELECT -->
+<section class="screen" id="mode">
+  <h2 class="mode-title">איך רוצים לשחק?</h2>
+  <div class="mode-card" onclick="startGame('all')">
+    <div class="mode-icon">&#127942;</div>
+    <div><div class="mode-label">משחק מלא</div><div class="mode-desc">כל 78 השאלות מעורבבות</div></div>
+  </div>
+  <div class="mode-card" onclick="showScreen('categories')">
+    <div class="mode-icon">&#128218;</div>
+    <div><div class="mode-label">לפי קטגוריה</div><div class="mode-desc">בחירת נושא אחד</div></div>
+  </div>
+  <div class="toggle-row">
+    <span class="toggle-label">טיימר (20 שניות לשאלה)</span>
+    <label class="toggle"><input type="checkbox" id="timerToggle"><span class="toggle-slider"></span></label>
+  </div>
+</section>
+
+<!-- CATEGORY SELECT -->
+<section class="screen" id="categories">
+  <h2 class="cat-title">בחירת קטגוריה</h2>
+  <div class="cat-grid" id="catGrid"></div>
+  <button class="btn-back" onclick="showScreen('mode')">&#8594; חזרה</button>
+</section>
+
+<!-- QUESTION -->
+<section class="screen" id="question">
+  <div class="q-top">
+    <span class="q-counter" id="qCounter"></span>
+    <span class="q-score" id="qScore">0</span>
+    <span class="q-streak" id="qStreak"></span>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="q-timer" id="qTimer">
+    <svg width="56" height="56" viewBox="0 0 56 56"><circle cx="28" cy="28" r="24" fill="none" stroke="#eee" stroke-width="4"/><circle id="timerCircle" cx="28" cy="28" r="24" fill="none" stroke="var(--blue)" stroke-width="4" stroke-linecap="round" stroke-dasharray="150.8" stroke-dashoffset="0"/></svg>
+    <div class="q-timer-text" id="timerText">20</div>
+  </div>
+  <span class="q-category" id="qCat"></span>
+  <div class="q-text" id="qText"></div>
+  <div class="q-options" id="qOptions"></div>
+  <div class="q-feedback" id="qFeedback"></div>
+</section>
+
+<!-- RESULTS -->
+<section class="screen" id="results">
+  <div class="result-circle">
+    <div class="result-score" id="resScore">0</div>
+    <div class="result-total" id="resTotal"></div>
+  </div>
+  <div class="result-msg" id="resMsg"></div>
+  <div class="result-stats" id="resStats"></div>
+  <div class="result-actions">
+    <button class="btn btn-wa" onclick="shareWA()">&#128172; שיתוף בוואצאפ</button>
+    <button class="btn btn-secondary" onclick="replay()">&#128260; שחקו שוב</button>
+    <button class="btn btn-outline" onclick="showScreen('mode')">&#128218; נסו קטגוריה אחרת</button>
+  </div>
+</section>
+
+</div>
+
+<div class="overlay" id="overlay"></div>
+<div class="streak-popup" id="streakPopup"><div class="streak-num" id="streakNum"></div><div class="streak-msg" id="streakMsg"></div></div>
+<canvas id="confetti-canvas"></canvas>
+
+<script>
+// ===== QUESTIONS DATA =====
+const CATS = {
+  torah:      {name:'תורה ותנ"ך',   icon:'\u{1F4DC}', color:'#A471AD', tag:'מהפסוק ועד ההלכה'},
+  zionism:    {name:'ציונות',       icon:'\u{1F1EE}\u{1F1F1}', color:'#005483', tag:'ממגילת העצמאות עד היום'},
+  science:    {name:'מדעים',        icon:'\u{1F52C}', color:'#B6C844', tag:'תגליות שישראל נתנה לעולם'},
+  innovation: {name:'חדשנות',       icon:'\u{1F4A1}', color:'#00ABDF', tag:'סטארט-אפ ניישן בפעולה'},
+  excellence: {name:'מצוינות',      icon:'\u{2B50}',  color:'#A471AD', tag:'הישגים ישראליים שצריך להכיר'}
+};
+
+const Q = [
+// TORAH 1-21
+{c:'torah',q:'מה היה חטאו של חיאל בית-האלי?',o:['בנה את יריחו','בנה את מלבס','בנה עגלי זהב בדן ובבית אל','בנה את ציקלג'],a:0},
+{c:'torah',q:'על מי מסופר בספר מלכים שזרקו את איזבל?',o:['יהוא ושלישו בידקר','שניים שלושה סריסים','למך','פועלי התברואה של יזרעאל'],a:1},
+{c:'torah',q:'באיזה ספר בתנ"ך מופיעה המילה "קוממיות"?',o:['ספר במדבר','ספר מלחמות השם','ספר ויקרא','אינה מופיעה'],a:2},
+{c:'torah',q:'מי הוא "משענת הקנה הרצוץ"?',o:['נבוכדנצר','למך','מתושלח','פרעה'],a:3},
+{c:'torah',q:'בספר קהלת מופיעה המילה "גומץ", מה פירושה?',o:['בור','גמד','גומי','תאו'],a:0},
+{c:'torah',q:'מה היתה "עצת אחיתופל" לאבשלום?',o:['להמתין','לתקוף מיד','להגיע להסדר','להכריז ניצחון'],a:1},
+{c:'torah',q:'מה הוא "כתר ארם צובא"?',o:['דגם כיסא של חברת כתר','כתר מלכות','ממצא ארכיאולוגי','ספר תורה מהעיר חלב'],a:3},
+{c:'torah',q:'איזה ספר נמצא כמעט בשלמותו במגילות ים המלח?',o:['ישעיהו','שמואל ב','בן סירא','תניא'],a:0},
+{c:'torah',q:'מי ייסד את רשת ישיבות ואולפנות בני עקיבא?',o:['הרב משה צבי נריה זצ"ל','הרב צבי יהודה קוק זצ"ל','הרב עובדיה יוסף זצ"ל','עקיבא שטיסל'],a:0},
+{c:'torah',q:'מה פירוש "תורה ועבודה"?',o:['לימוד תורה בלבד','מושג תלמודי','שילוב תורה עם עבודה יצרנית','רעיון גלותי'],a:2},
+{c:'torah',q:'מי היה הרב הראשי האשכנזי הראשון של מדינת ישראל?',o:['הרב שלמה גורן זצ"ל','הרב יצחק הרצוג זצ"ל','הרב אברהם יצחק הכהן קוק זצ"ל','הרב מאיר עוזיאל זצ"ל'],a:1},
+{c:'torah',q:'מהי מצוות יישוב ארץ ישראל לפי הרמב"ן?',o:['מצווה מדרבנן','איסור מגורים בחו"ל','מצווה חקלאית','לכבוש ולשבת בארץ ישראל'],a:3},
+{c:'torah',q:'באיזו פרשה נשלחו המרגלים לתור את הארץ?',o:['בהעלותך','ועננו','שלח לך','חוקת'],a:2},
+{c:'torah',q:'איזו ישיבה ייסד הרב אברהם יצחק הכהן קוק זצ"ל בירושלים?',o:['ישיבת הקו','ישיבת מרכז הרב','ישיבת חברון','ישיבת הר עציון'],a:1},
+{c:'torah',q:'מי חיבר את ספר הכוזרי?',o:['הרמב"ם','מיכה גודמן','מלך כוזר','ר\' יהודה הלוי'],a:3},
+{c:'torah',q:'באיזה תאריך חל יום ירושלים?',o:['י"ז בתמוז','כ"ח באייר','א\' בתשרי','כ\' בתמוז'],a:1},
+{c:'torah',q:'מהו האפרסמון מתקופת בית שני?',o:['מטבע','משקה','צמח שהופק ממנו בושם','פרי'],a:2},
+{c:'torah',q:'איזה ספר כתב הרמב"ם לסיכום ההלכה?',o:['מורה נבוכים','שולחן ערוך','משנה תורה','ספר המצוות'],a:2},
+{c:'torah',q:'מהי מצוות פאה?',o:['פינת שדה לעניים','תרומה','קרבן','כיסוי ראש לנשים'],a:0},
+{c:'torah',q:'מהו סדר זרעים במשנה?',o:['הסדר השני','סדר נזיקין','הסדר הראשון במשנה','סדר טהרות'],a:2},
+{c:'torah',q:'מהי מצוות תלמוד תורה?',o:['מצווה לכוהנים','מצווה לילדים','מצווה למבוגרים בלבד','מצווה לכל יהודי'],a:3},
+// ZIONISM 22-42
+{c:'zionism',q:'מי השחקן שנבחר במקום ה-12 בדראפט ל-NBA והעדיף לעלות לארץ?',o:['אולסי פרי','דני אבדיה','אייל ברקוביץ\'','טל ברודי'],a:3},
+{c:'zionism',q:'מה אפיין במיוחד את עולי העליה החמישית?',o:['דייקנות','מטבח צפון אפריקאי','מוזיקה אנדלוסית','רקע חקלאי'],a:0},
+{c:'zionism',q:'באיזה אירוע איבד יוסף טרומפלדור את ידו?',o:['קרב יד מרדכי','קרב תל חי','מלחמת רוסיה-יפן','מלחמת העולם הראשונה'],a:2},
+{c:'zionism',q:'מי היא "המפלצת על הגבעה"?',o:['מצודת יואב','גבעה 24','גבעת חלפון','גבעת התחמושת'],a:0},
+{c:'zionism',q:'על שם מי נקרא קיבוץ גן שמואל?',o:['שמואל א\'','ש"י עגנון','הרב שמואל מוהליבר זצ"ל','נבי סמואל'],a:2},
+{c:'zionism',q:'מה היתה עמדתה של בריטניה בהצבעת האו"ם על תוכנית החלוקה?',o:['בעד','נגד','נמנעת','נעדרת'],a:2},
+{c:'zionism',q:'כמה יהודים מנה היישוב היהודי בארץ ישראל בזמן הכרזת המדינה?',o:['כ-650,000','כמיליון','כ-2 מיליון','כ-3 מיליון'],a:0},
+{c:'zionism',q:'מה היה עיסוקו העיקרי של זלמן שזר לפני שנבחר לנשיא השלישי?',o:['גנן בגן ילדים','טייס קרב','המצאת פטנטים','עיתונאות'],a:3},
+{c:'zionism',q:'מי הניף את "דגל הדיו" באילת?',o:['רפאל איתן','אברהם אדן','יצחק שמיר','יצחק רבין'],a:1},
+{c:'zionism',q:'היכן נולד בנימין זאב הרצל?',o:['סג\'רה','וינה','בודפשט','אודסה'],a:2},
+{c:'zionism',q:'מי כתב את החיבור "מדינת היהודים"?',o:['חיים ויצמן','מקס נורדאו','פרנץ קפקא','בנימין זאב הרצל'],a:3},
+{c:'zionism',q:'היכן נערך הקונגרס הציוני הראשון?',o:['וינה','ברלין','בזל','פריז'],a:2},
+{c:'zionism',q:'מהי הצהרת בלפור?',o:['הסכם חלוקה','מכתב הכרה בבית לאומי ליהודים','הצהרת הון של מיליארדר בריטי','אמנה בינלאומית'],a:1},
+{c:'zionism',q:'באיזה תפקיד לא כיהנה גולדה מאיר?',o:['שרת העבודה','ראש הממשלה','שגרירת ישראל','שרת הכלכלה'],a:3},
+{c:'zionism',q:'איזו ספינת מעפילים הפכה לסמל המאבק?',o:['שיבת ציון','תל חי','אקסודוס 1947','יהודה הלוי'],a:2},
+{c:'zionism',q:'מהו חוק השבות?',o:['חוק הגירה','התאזרחות ליהודים','חוק אזרחות','חוק ביטחון'],a:1},
+{c:'zionism',q:'מהי תוכנית החלוקה של האו"ם?',o:['הסכם כלכלי','חלוקת שטח המנדט','הסכם צבאי','פיקוח הגירה'],a:1},
+{c:'zionism',q:'מה היה מבצע עזרא ונחמיה?',o:['העלאת יהודי תימן','עליית יהודי אתיופיה','העלאת יהודי עיראק','מבצע צבאי'],a:2},
+{c:'zionism',q:'מהו המוביל הארצי?',o:['כביש 6','מיזם הרכבת המזרחית','מערכת להובלת מים','צביקה פיק'],a:2},
+{c:'zionism',q:'איזה תפקיד מילא חיים ויצמן?',o:['ראש הממשלה','שר החוץ','יועמ"ש המנדט הבריטי','הנשיא הראשון'],a:3},
+{c:'zionism',q:'מה היתה הסתדרות העובדים?',o:['מפלגה','ועד עירוני','ארגון עובדים','גוף חקלאי'],a:2},
+// SCIENCE 43-60
+{c:'science',q:'מי זוכה פרס הנובל היהודי שמיוחס לו פיתוח הלוחמה הכימית אך גם המצאת דשנים שהצילו מיליונים מרעב?',o:['פריץ הבר','חיים וייצמן','אלברט איינשטיין','זיגמונד פרויד'],a:0},
+{c:'science',q:'כיצד נקרא הלווין הראשון ששיגרה ישראל לחלל?',o:['עמוס 3','נהוראי 1','שביט 1','אופק 1'],a:3},
+{c:'science',q:'למי מיוחס הציטוט על חשיבות המחקר המדעי לביטחון ולכלכלה?',o:['פרופ\' ישראל אומן','פיני גרשון','פרופ\' נחמה לייבוביץ\'','דוד בן גוריון'],a:3},
+{c:'science',q:'מה ייחודי באופן בו ישראל משגרת את לווייני אופק?',o:['השיגור לכיוון מערב נגד סיבוב כדור הארץ','השיגור מתוך כלי שיט','שימוש בטילים בצביעה מיוחדת','שיגור רק בימי חול'],a:0},
+{c:'science',q:'מי המדען שגילה גביש עם סימטריה שנחשבה בלתי אפשרית וזכה על כך בנובל?',o:['דן שכטמן','עדה יונת','ישראל אומן','רפי קרסו'],a:0},
+{c:'science',q:'איזה חומר שפותח על ידי חיים ויצמן סייע לבריטים במלחמת העולם הראשונה?',o:['ניטרוגליצרין','אצטון','פניצילין','סודה לשתייה'],a:1},
+{c:'science',q:'איזה מדען סירב להצעה להיות נשיא מדינת ישראל?',o:['אלברט איינשטיין','חיים ויצמן','עזר ויצמן','זיגמונד פרויד'],a:0},
+{c:'science',q:'איזו שפה תוכננה להיות שפת ההוראה בטכניון בתחילת דרכו?',o:['אנגלית','עברית','צרפתית','גרמנית'],a:3},
+{c:'science',q:'מה נכון לגבי פיתוח עגבנית השרי בישראל?',o:['פותחה כדי להאריך חיי מדף ולשפר עמידות בהובלה','פותחה במקרה','פותחה למנות קרב','פותחה לצבע בלבד'],a:0},
+{c:'science',q:'מי זכה בפרס נובל לכימיה בשנת 2004 על גילוי מערכת ubiquitin?',o:['אהרון צ\'חנובר ואברהם הרשקו','דן שכטמן','ישראל אומן','עדה יונת'],a:0},
+{c:'science',q:'על מה זכה דן שכטמן בפרס נובל לכימיה?',o:['טכנולוגיית פיתוח דשנים','טכניקת ייצור יהלומים','גילוי קוואזי-קריסטלים','גילוי פולימרים'],a:2},
+{c:'science',q:'מה פיתחה חברת מובילאיי?',o:['מערכת GPS לרכב','מנוע חיפוש גיאוגרפי','סוללות לרכב','מערכות ראייה לרכב'],a:3},
+{c:'science',q:'מהי טכנולוגיית הטפטוף?',o:['מערכת ניטור מים באוסמוזה הפוכה','השקיה ישירה לשורש הצמח','ריסוס אווירי של מים מטוהרים','חימום מים באמצעות אנרגיה סולרית'],a:1},
+{c:'science',q:'מה שמו של הטיל המיירט של מערכת כיפת ברזל?',o:['טמיר','תמיר','חץ','לביד'],a:0},
+{c:'science',q:'מי פיתח את מערכת "מעיל רוח"?',o:['התעשייה האווירית','ג\'ורג\'יו ארמאני','אלביט','רפא"ל'],a:3},
+{c:'science',q:'כמה אוניברסיטאות מחקר מרכזיות יש בישראל (כולל מכון ויצמן)?',o:['חמש','עשר','שתים עשרה','שבע'],a:1},
+{c:'science',q:'במה עוסקת חברת אורמת?',o:['אנרגיה גרעינית','אנרגיה גיאותרמית','אנרגיה סולארית','שבבים'],a:1},
+{c:'science',q:'מהו מכון וולקני?',o:['מכון מחקר חקלאי','מכון לחקר הים','מכון כימי','מרכז רפואי'],a:0},
+// INNOVATION 61-73
+{c:'innovation',q:'ב-2025 ישראל דורגה ראשונה בהשקעה במחקר ופיתוח כאחוז מהתמ"ג. מי המדינה השנייה?',o:['דרום קוריאה','ארה"ב','גרמניה','יפן'],a:0},
+{c:'innovation',q:'למי מהמדינות הבאות לא נמכרה מערכת הגנת טילים ישראלית?',o:['גרמניה','רומניה','ביילורוסיה','אזרבייג\'אן'],a:2},
+{c:'innovation',q:'כמה עובדים צפויים לעבוד במטה החדש של NVIDIA בישראל?',o:['500','1,250','2,500','10,000'],a:3},
+{c:'innovation',q:'מי כונה "אבי המרכבה"?',o:['אביגדור קהלני','יהוא','משה מונטיפיורי','ישראל טל'],a:3},
+{c:'innovation',q:'מהו הפיתוח של חברת Given Imaging?',o:['סטנט','גלולה מצלמת','מעבד','בובת לבובו'],a:1},
+{c:'innovation',q:'כמה אחוזים ממי השתייה בישראל מקורם בהתפלה?',o:['כ-20%','כ-50%','כ-70%','100%'],a:2},
+{c:'innovation',q:'איזו מחברות הטכנולוגיה הבאות אינה מחזיקה מרכז פיתוח משמעותי בישראל?',o:['Amazon','Google','Microsoft','Samsung'],a:3},
+{c:'innovation',q:'מה פיתחה חברת צ\'ק פוינט?',o:['אנטי-וירוס','מנוע חיפוש','מערכת הפעלה','חומת אש'],a:3},
+{c:'innovation',q:'מהו Waze?',o:['מנוע חיפוש','אפליקציית מוניות','אפליקציית ניווט','מערכת צבאית'],a:2},
+{c:'innovation',q:'מה מאפיין את תעשיית ההייטק הישראלית?',o:['אספקה לשוק הרכב','מספר גבוה של סטארטאפים לנפש','ייצור שבבים בננו-טכנולוגיה','ריבוי מכוניות ליסינג'],a:1},
+{c:'innovation',q:'מה פיתחה חברת EarlySense?',o:['מכשיר לחץ דם','מצלמה רפואית','אפליקציה','חיישן לניטור נשימה ללא מגע'],a:3},
+{c:'innovation',q:'מהו CyberSpark בבאר שבע?',o:['פילטרים לסנאפצ\'אט','אזור סייבר משולב אוניברסיטה ותעשייה','פארק סולארי','מכון מחקר'],a:1},
+{c:'innovation',q:'מהי תוכנית "יוזמה" בהקשר של ישראל?',o:['תוכנית חינוכית אקדמית','תוכנית צבאית ייעודית','תוכנית חקלאית מקומית','תוכנית לפיתוח הון סיכון'],a:3},
+// EXCELLENCE 74-78
+{c:'excellence',q:'באיזה פרס מובילה ישראל בעולם במספר הזוכים ביחס לאוכלוסיה?',o:['מדליית פילדס','פרס טיורינג','פרס נובל','פרס לאסקר'],a:2},
+{c:'excellence',q:'איזה בית חולים כונה "הרולס רויס של בתי החולים"?',o:['מאונט סיני בניו יורק','משגב לדך בירושלים','בית חולים שדה צה"לי בהאיטי','יוספטל באילת'],a:2},
+{c:'excellence',q:'כמה שנים נמשך רצף מדליות הזהב הרוסי לפני זכיית לינוי אשרם?',o:['7','10','11','21'],a:3},
+{c:'excellence',q:'במה נחשבת תעשיית היין הישראלית למצטיינת בעולם?',o:['ייצור יין באקלים חם','ייצור לנפש גבוה במיוחד','זנים עתיקים בלבד','שימוש בשמרים ייחודיים'],a:0},
+{c:'excellence',q:'מהו פרס "כינור דוד"?',o:['פרס מוזיקה בינלאומי','פרס טלוויזיה ישראלי','פרס למצוינות בתרבות','פרס קולנוע אירופי'],a:2}
+];
+
+// ===== MICRO COPY =====
+const MC_CORRECT = [
+  'בום! תשובה נכונה!',
+  'רגע, מאיפה כל הידע הזה?',
+  'בול! מי צריך גוגל?',
+  'יואו! ידע ברמה אחרת',
+  'מושלם! עוד אחת כזו',
+  'וואלה, זה היה מדויק!',
+  'כל הכבוד, עבודה טובה!',
+  'ידעתם את זה? כמובן שכן!',
+  'עפנו! הלאה לבאה',
+  'קלע! נקודה בפנים'
+];
+const MC_WRONG = [
+  'אופס! קרוב אבל לא מספיק',
+  'לא הפעם - אבל עכשיו יודעים!',
+  'טעות קטנה, ממשיכים הלאה',
+  'פספוס! אבל הבאה בפנים',
+  'לא נורא - עוד שניה עולים לרצף',
+  'שווה לזכור את התשובה הזו!',
+  'לא מדויק, אבל ממשיכים!',
+  'קרוב! שווה לנסות שוב אחר כך'
+];
+const MC_STREAK = {
+  3:'שלושה ברצף! ממשיכים!',
+  5:'חמישה ברצף! רצינו!',
+  10:'עשר ברצף! ברמה של חידון התנ"ך!',
+  15:'חמש עשרה ברצף! בלתי ניתן לעצירה!'
+};
+const MC_RESULT = [
+  {min:90, msg:'וואלה, ידע ברמה גבוהה! כל הכבוד!'},
+  {min:70, msg:'עבודה מעולה! ידע מרשים!'},
+  {min:50, msg:'לא רע בכלל! שווה לנסות שוב'},
+  {min:0,  msg:'בפעם הבאה זה יהיה אחרת! עוד סיבוב?'}
+];
+
+// ===== GAME STATE =====
+let state = {
+  screen:'splash', questions:[], idx:0, score:0, streak:0, bestStreak:0,
+  correct:0, mode:null, cat:null, timer:false, timerInterval:null, timeLeft:20,
+  answered:false
+};
+
+// ===== SCREENS =====
+function showScreen(id) {
+  const cur = document.querySelector('.screen.active');
+  if (cur) { cur.classList.add('slide-out'); cur.classList.remove('active');
+    setTimeout(()=>cur.classList.remove('slide-out'),400); }
+  setTimeout(()=>{
+    const next = document.getElementById(id);
+    next.classList.add('active');
+    state.screen = id;
+    if (id==='categories') buildCatGrid();
+  },50);
+}
+
+// ===== CATEGORY GRID =====
+function buildCatGrid() {
+  const grid = document.getElementById('catGrid');
+  grid.innerHTML = '';
+  Object.entries(CATS).forEach(([key,cat],i)=>{
+    const count = Q.filter(q=>q.c===key).length;
+    const card = document.createElement('div');
+    card.className = 'cat-card';
+    card.onclick = ()=>startGame('cat',key);
+    card.innerHTML = `<div class="cat-icon">${cat.icon}</div><div><div class="cat-name" style="color:${cat.color}">${cat.name}</div><div class="cat-tag">${cat.tag}</div></div><span class="cat-count">${count} שאלות</span>`;
+    grid.appendChild(card);
+    setTimeout(()=>card.classList.add('show'), 80*(i+1));
+  });
+}
+
+// ===== START GAME =====
+function startGame(mode, cat) {
+  state.mode = mode;
+  state.cat = cat||null;
+  state.idx = 0; state.score = 0; state.streak = 0; state.bestStreak = 0; state.correct = 0;
+  state.timer = document.getElementById('timerToggle').checked;
+  let pool = mode==='all' ? [...Q] : Q.filter(q=>q.c===cat);
+  // shuffle questions
+  for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}
+  state.questions = pool;
+  showScreen('question');
+  setTimeout(()=>loadQuestion(),100);
+}
+
+// ===== LOAD QUESTION =====
+function loadQuestion() {
+  const q = state.questions[state.idx];
+  const total = state.questions.length;
+  state.answered = false;
+  // header
+  document.getElementById('qCounter').textContent = `שאלה ${state.idx+1} מתוך ${total}`;
+  document.getElementById('qScore').textContent = state.score;
+  const streakEl = document.getElementById('qStreak');
+  if(state.streak>=3){streakEl.textContent=`${state.streak} ברצף`;streakEl.classList.add('show');}
+  else{streakEl.classList.remove('show');}
+  // progress
+  document.getElementById('progressFill').style.width = `${((state.idx)/total)*100}%`;
+  // category
+  const catData = CATS[q.c];
+  const catEl = document.getElementById('qCat');
+  catEl.textContent = catData.name;
+  catEl.style.background = catData.color;
+  // question
+  document.getElementById('qText').textContent = q.q;
+  // options - shuffle order
+  const letters = ['א','ב','ג','ד'];
+  let indices = [0,1,2,3];
+  for(let i=3;i>0;i--){const j=Math.floor(Math.random()*(i+1));[indices[i],indices[j]]=[indices[j],indices[i]];}
+  const optCont = document.getElementById('qOptions');
+  optCont.innerHTML = '';
+  indices.forEach((oi,vi)=>{
+    const opt = document.createElement('div');
+    opt.className = 'q-opt';
+    opt.dataset.idx = oi;
+    opt.innerHTML = `<span class="letter">${letters[vi]}</span><span class="text">${q.o[oi]}</span>`;
+    opt.onclick = ()=>handleAnswer(oi, opt);
+    optCont.appendChild(opt);
+    setTimeout(()=>opt.classList.add('show'), 60*(vi+1));
+  });
+  // feedback
+  const fb = document.getElementById('qFeedback');
+  fb.className = 'q-feedback'; fb.textContent = '';
+  // timer
+  const timerEl = document.getElementById('qTimer');
+  if(state.timer){
+    timerEl.classList.add('show');
+    state.timeLeft = 20;
+    updateTimerUI();
+    clearInterval(state.timerInterval);
+    state.timerInterval = setInterval(()=>{
+      state.timeLeft--;
+      updateTimerUI();
+      if(state.timeLeft<=0){clearInterval(state.timerInterval);timeUp();}
+    },1000);
+  } else {
+    timerEl.classList.remove('show');
+  }
+}
+
+function updateTimerUI(){
+  const pct = state.timeLeft/20;
+  const circle = document.getElementById('timerCircle');
+  circle.style.strokeDashoffset = 150.8*(1-pct);
+  circle.style.stroke = state.timeLeft>10?'var(--blue)':state.timeLeft>5?'#F5A623':'var(--wrong)';
+  document.getElementById('timerText').textContent = state.timeLeft;
+}
+
+function timeUp(){
+  if(state.answered) return;
+  state.answered = true;
+  const q = state.questions[state.idx];
+  // mark correct
+  document.querySelectorAll('.q-opt').forEach(o=>{
+    o.classList.add('disabled');
+    if(parseInt(o.dataset.idx)===q.a) o.classList.add('correct');
+  });
+  state.streak = 0;
+  showFeedback(false, 'נגמר הזמן! השאלה הבאה מחכה');
+  setTimeout(nextQuestion, 1800);
+}
+
+// ===== HANDLE ANSWER =====
+function handleAnswer(chosenIdx, el) {
+  if(state.answered) return;
+  state.answered = true;
+  clearInterval(state.timerInterval);
+  const q = state.questions[state.idx];
+  const isCorrect = chosenIdx === q.a;
+  // disable all
+  document.querySelectorAll('.q-opt').forEach(o=>o.classList.add('disabled'));
+  if(isCorrect){
+    el.classList.add('correct');
+    state.correct++;
+    let pts = 10;
+    if(state.timer) pts += state.timeLeft;
+    state.streak++;
+    if(state.streak>=10) pts+=15;
+    else if(state.streak>=5) pts+=10;
+    else if(state.streak>=3) pts+=5;
+    state.score += pts;
+    if(state.streak>state.bestStreak) state.bestStreak = state.streak;
+    document.getElementById('qScore').textContent = state.score;
+    showFeedback(true);
+    miniConfetti();
+    // streak popup
+    if(MC_STREAK[state.streak]) setTimeout(()=>showStreak(state.streak),400);
+  } else {
+    el.classList.add('wrong');
+    // reveal correct
+    document.querySelectorAll('.q-opt').forEach(o=>{
+      if(parseInt(o.dataset.idx)===q.a) o.classList.add('correct');
+    });
+    state.streak = 0;
+    showFeedback(false);
+  }
+  const streakEl = document.getElementById('qStreak');
+  if(state.streak>=3){streakEl.textContent=`${state.streak} ברצף`;streakEl.classList.add('show');}
+  else{streakEl.classList.remove('show');}
+  setTimeout(nextQuestion, 1800);
+}
+
+function showFeedback(correct, custom){
+  const fb = document.getElementById('qFeedback');
+  fb.textContent = custom || (correct ? MC_CORRECT[Math.floor(Math.random()*MC_CORRECT.length)] : MC_WRONG[Math.floor(Math.random()*MC_WRONG.length)]);
+  fb.className = 'q-feedback show ' + (correct?'correct-fb':'wrong-fb');
+}
+
+function nextQuestion(){
+  state.idx++;
+  if(state.idx >= state.questions.length){
+    showResults();
+  } else {
+    // animate out + in
+    const qText = document.getElementById('qText');
+    qText.style.opacity='0'; qText.style.transform='translateY(-10px)';
+    setTimeout(()=>{loadQuestion();qText.style.opacity='1';qText.style.transform='translateY(0)';},200);
+  }
+}
+
+// ===== STREAK POPUP =====
+function showStreak(n){
+  const popup = document.getElementById('streakPopup');
+  const overlay = document.getElementById('overlay');
+  document.getElementById('streakNum').textContent = n;
+  document.getElementById('streakMsg').textContent = MC_STREAK[n];
+  popup.classList.add('show');
+  overlay.classList.add('show');
+  fireConfetti();
+  setTimeout(()=>{popup.classList.remove('show');overlay.classList.remove('show');},1800);
+}
+
+// ===== RESULTS =====
+function showResults(){
+  clearInterval(state.timerInterval);
+  showScreen('results');
+  const pct = Math.round((state.correct/state.questions.length)*100);
+  // animate score
+  const scoreEl = document.getElementById('resScore');
+  let cur = 0;
+  const target = state.correct;
+  const step = ()=>{
+    cur++;
+    scoreEl.textContent = cur;
+    if(cur<target) requestAnimationFrame(step);
+  };
+  setTimeout(step,400);
+  document.getElementById('resTotal').textContent = `מתוך ${state.questions.length}`;
+  // message
+  const msgData = MC_RESULT.find(m=>pct>=m.min);
+  document.getElementById('resMsg').textContent = msgData.msg;
+  // stats
+  document.getElementById('resStats').innerHTML = `
+    <div class="stat-box"><div class="stat-val">${pct}%</div><div class="stat-label">אחוז הצלחה</div></div>
+    <div class="stat-box"><div class="stat-val">${state.bestStreak}</div><div class="stat-label">רצף הכי טוב</div></div>
+    <div class="stat-box"><div class="stat-val">${state.score}</div><div class="stat-label">ניקוד כולל</div></div>
+    <div class="stat-box"><div class="stat-val">${state.questions.length-state.correct}</div><div class="stat-label">טעויות</div></div>
+  `;
+  // confetti if good
+  if(pct>=70) setTimeout(fireConfetti,500);
+  // save best
+  const key = 'yba78_best_'+(state.cat||'all');
+  const prev = parseInt(localStorage.getItem(key)||'0');
+  if(state.score>prev) localStorage.setItem(key, state.score);
+}
+
+// ===== SHARE =====
+function shareWA(){
+  const pct = Math.round((state.correct/state.questions.length)*100);
+  const text = `\u{1F1EE}\u{1F1F1} שיחקתי בחידון יום העצמאות של מרכז ישיבות ואולפנות בני עקיבא!\n\nעניתי נכון על ${state.correct} מתוך ${state.questions.length} שאלות (${pct}%)\nניקוד: ${state.score} נקודות\n\nמצליחים לנצח?\n\u{1F449} ${location.href}`;
+  if(navigator.share){
+    navigator.share({title:'חידון יום העצמאות',text});
+  } else {
+    window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank');
+  }
+}
+
+function replay(){
+  startGame(state.mode, state.cat);
+}
+
+// ===== CONFETTI =====
+const canvas = document.getElementById('confetti-canvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+let animFrame;
+
+function resizeCanvas(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
+window.addEventListener('resize',resizeCanvas);
+resizeCanvas();
+
+function fireConfetti(){
+  particles = [];
+  const colors = ['#005483','#A471AD','#B6C844','#00ABDF','#0076BB','#FFD700'];
+  for(let i=0;i<120;i++){
+    particles.push({
+      x:canvas.width/2, y:canvas.height/2,
+      vx:(Math.random()-.5)*16, vy:Math.random()*-14-4,
+      w:Math.random()*8+4, h:Math.random()*6+3,
+      color:colors[Math.floor(Math.random()*colors.length)],
+      rot:Math.random()*360, rotV:(Math.random()-.5)*10,
+      life:1, decay:Math.random()*.015+.008
+    });
+  }
+  if(!animFrame) animateConfetti();
+}
+
+function miniConfetti(){
+  const colors = ['#005483','#A471AD','#B6C844','#00ABDF'];
+  for(let i=0;i<20;i++){
+    particles.push({
+      x:canvas.width/2, y:canvas.height*.4,
+      vx:(Math.random()-.5)*8, vy:Math.random()*-6-2,
+      w:Math.random()*6+2, h:Math.random()*4+2,
+      color:colors[Math.floor(Math.random()*colors.length)],
+      rot:Math.random()*360, rotV:(Math.random()-.5)*8,
+      life:1, decay:Math.random()*.02+.015
+    });
+  }
+  if(!animFrame) animateConfetti();
+}
+
+function animateConfetti(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  particles.forEach(p=>{
+    p.x+=p.vx; p.y+=p.vy; p.vy+=.3; p.rot+=p.rotV; p.life-=p.decay;
+    if(p.life>0){
+      ctx.save();
+      ctx.translate(p.x,p.y);
+      ctx.rotate(p.rot*Math.PI/180);
+      ctx.globalAlpha=p.life;
+      ctx.fillStyle=p.color;
+      ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+      ctx.restore();
+    }
+  });
+  particles = particles.filter(p=>p.life>0);
+  if(particles.length>0){
+    animFrame = requestAnimationFrame(animateConfetti);
+  } else {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    animFrame = null;
+  }
+}
+</script>
+</body>
+</html>
