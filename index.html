@@ -6,7 +6,7 @@
 <title>חידון יום העצמאות | מרכז ישיבות ואולפנות בני עקיבא</title>
 <meta name="description" content="78 שאלות, 5 קטגוריות - חידון יום העצמאות של מרכז ישיבות ואולפנות בני עקיבא">
 <meta property="og:title" content="חידון יום העצמאות | מרכז ישיבות ואולפנות בני עקיבא">
-<meta property="og:description" content="78 שאלות. 5 קטגוריות. כמה באמת יודעים?">
+<meta property="og:description" content="78 שאלות. 5 קטגוריות. חושבים שתצליחו?">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -29,16 +29,17 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
 .screen.active{opacity:1;pointer-events:auto;transform:translateX(0)}
 .screen.slide-out{opacity:0;transform:translateX(30px)}
 
-/* GARLAND - Israeli flag chain with animation */
+/* GARLAND - brand colors flag chain with animation */
 .garland{position:absolute;top:0;left:0;right:0;height:36px;display:flex;justify-content:center;gap:2px;overflow:hidden;opacity:0;animation:fadeIn .5s .2s ease forwards;z-index:2}
 .flag{width:16px;height:20px;clip-path:polygon(0 0,100% 0,50% 100%);flex-shrink:0;animation:flagWave 2s ease-in-out infinite}
-.flag:nth-child(odd){background:#0038b8}
-.flag:nth-child(even){background:var(--white);border:1px solid #0038b8}
+.flag:nth-child(3n+1){background:var(--blue-dark)}
+.flag:nth-child(3n+2){background:var(--purple)}
+.flag:nth-child(3n){background:var(--green)}
 .flag:nth-child(1){animation-delay:0s}.flag:nth-child(2){animation-delay:.1s}.flag:nth-child(3){animation-delay:.2s}.flag:nth-child(4){animation-delay:.3s}.flag:nth-child(5){animation-delay:.4s}.flag:nth-child(6){animation-delay:.5s}.flag:nth-child(7){animation-delay:.6s}.flag:nth-child(8){animation-delay:.7s}.flag:nth-child(9){animation-delay:.8s}.flag:nth-child(10){animation-delay:.9s}.flag:nth-child(11){animation-delay:1s}.flag:nth-child(12){animation-delay:1.1s}.flag:nth-child(13){animation-delay:1.2s}.flag:nth-child(14){animation-delay:1.3s}.flag:nth-child(15){animation-delay:1.4s}.flag:nth-child(16){animation-delay:1.5s}.flag:nth-child(17){animation-delay:1.6s}.flag:nth-child(18){animation-delay:1.7s}.flag:nth-child(19){animation-delay:1.8s}.flag:nth-child(20){animation-delay:1.9s}
 @keyframes flagWave{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-3px) rotate(3deg)}}
 
-/* Background pattern - Star of David / Israeli motif */
-.il-pattern{position:absolute;inset:0;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cpath d='M20 5 L26 15 H34 L28 22 L31 32 L20 27 L9 32 L12 22 L6 15 H14 Z' fill='%23005483' /%3E%3C/svg%3E");background-size:50px 50px;pointer-events:none;z-index:0}
+/* Background pattern - small Israeli flags faded */
+.il-pattern{position:absolute;inset:0;opacity:.035;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='22' viewBox='0 0 30 22'%3E%3Crect width='30' height='22' fill='white' rx='2'/%3E%3Crect y='3' width='30' height='3' fill='%230038b8'/%3E%3Crect y='16' width='30' height='3' fill='%230038b8'/%3E%3Cpolygon points='15,6 17.5,10 22,10 18.5,13 20,17 15,14.5 10,17 11.5,13 8,10 12.5,10' fill='%230038b8'/%3E%3C/svg%3E");background-size:44px 34px;pointer-events:none;z-index:0}
 
 /* SPLASH */
 #splash{justify-content:center;align-items:center;text-align:center;background:linear-gradient(135deg,var(--white) 0%,#f5f0f8 50%,#eef5ff 100%);gap:4px}
@@ -172,10 +173,10 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
 <section class="screen active" id="splash">
   <div class="il-pattern"></div>
   <div class="garland" id="garland"></div>
-  <span class="splash-deco">&#10024;</span>
-  <span class="splash-deco">&#11088;</span>
-  <span class="splash-deco">&#10024;</span>
-  <span class="splash-deco">&#11088;</span>
+  <span class="splash-deco">&#10022;</span>
+  <span class="splash-deco">&#10022;</span>
+  <span class="splash-deco">&#10022;</span>
+  <span class="splash-deco">&#10022;</span>
   <img class="splash-logo" src="https://yba.org.il/wp-content/uploads/2021/02/Untitled-2.png" alt="מרכז ישיבות ואולפנות בני עקיבא" onerror="this.style.display='none'">
   <h1 class="splash-title">חידון יום העצמאות</h1>
   <span class="splash-year">78 שנים למדינת ישראל</span>
@@ -186,18 +187,22 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
 <!-- MODE SELECT -->
 <section class="screen" id="mode">
   <div class="garland"></div>
-  <h2 class="mode-title">איך רוצים לשחק?</h2>
-  <div class="mode-card" onclick="startGame('all')">
-    <div class="mode-icon">&#127922;</div>
-    <div><div class="mode-label">ערבוב מלא</div><div class="mode-desc">כל 78 השאלות בסדר אקראי</div></div>
+  <h2 class="mode-title">בואו נשחק!</h2>
+  <div class="mode-card" onclick="startGame('quick')">
+    <div class="mode-icon">&#9889;</div>
+    <div><div class="mode-label">סיבוב מהיר</div><div class="mode-desc">10 שאלות אקראיות מכל הקטגוריות</div></div>
   </div>
-  <div class="mode-card" onclick="startGame('seq')">
-    <div class="mode-icon">&#128220;</div>
-    <div><div class="mode-label">רציף - מההתחלה לסוף</div><div class="mode-desc">כל 78 השאלות לפי הסדר</div></div>
+  <div class="mode-card" onclick="startGame('challenge')">
+    <div class="mode-icon">&#127942;</div>
+    <div><div class="mode-label">אתגר</div><div class="mode-desc">25 שאלות אקראיות - בשבילכם?</div></div>
   </div>
   <div class="mode-card" onclick="showScreen('categories')">
     <div class="mode-icon">&#128218;</div>
     <div><div class="mode-label">לפי קטגוריה</div><div class="mode-desc">בחירת נושא אחד</div></div>
+  </div>
+  <div class="mode-card" onclick="startGame('marathon')">
+    <div class="mode-icon">&#128170;</div>
+    <div><div class="mode-label">מרתון 78</div><div class="mode-desc">כל השאלות - רק למי שבאמת רציני</div></div>
   </div>
   <div class="toggle-row">
     <span class="toggle-label">טיימר (20 שניות לשאלה)</span>
@@ -452,19 +457,22 @@ function startGame(mode, cat) {
   state.idx = 0; state.score = 0; state.streak = 0; state.bestStreak = 0; state.correct = 0;
   state.timer = document.getElementById('timerToggle').checked;
   let pool;
-  if(mode==='seq') {
-    pool = [...Q]; // sequential - original order
-  } else if(mode==='cat') {
+  if(mode==='cat') {
     pool = Q.filter(q=>q.c===cat);
-    for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}
+    shuffle(pool);
+  } else if(mode==='marathon') {
+    pool = [...Q]; // all 78 in order
   } else {
-    pool = [...Q]; // all - shuffled
-    for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}
+    pool = [...Q];
+    shuffle(pool);
+    if(mode==='quick') pool = pool.slice(0,10);
+    else if(mode==='challenge') pool = pool.slice(0,25);
   }
   state.questions = pool;
   showScreen('question');
   setTimeout(()=>loadQuestion(),100);
 }
+function shuffle(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}}
 
 // ===== LOAD QUESTION =====
 function loadQuestion() {
