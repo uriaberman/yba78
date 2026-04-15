@@ -168,6 +168,11 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
 </style>
 </head>
 <body>
+<div id="tapOverlay" style="position:fixed;inset:0;z-index:999;background:linear-gradient(135deg,var(--white) 0%,#f5f0f8 50%,#eef5ff 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;gap:12px" onclick="dismissTap()">
+  <img src="https://yba.org.il/wp-content/uploads/2021/02/Untitled-2.png" style="width:90px;height:auto;animation:logoIn 1s .2s cubic-bezier(.175,.885,.32,1.275) forwards;opacity:0">
+  <div style="font-size:1.4rem;font-weight:700;color:var(--blue-dark);opacity:0;animation:slideUp .5s .8s ease forwards">חידון יום העצמאות</div>
+  <div style="font-size:.85rem;color:var(--purple);opacity:0;animation:fadeIn .4s 1.2s ease forwards">לחצו כדי להתחיל</div>
+</div>
 <div class="app" id="app">
 
 <!-- SPLASH -->
@@ -265,7 +270,7 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
 
 <button class="fixed-btn music-btn" id="musicBtn" onclick="toggleMusic()" title="מוזיקה"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><polygon points="11,5 6,9 2,9 2,15 6,15 11,19" fill="white" stroke="white"/><path id="musicWaves" d="M15.54 8.46a5 5 0 010 7.07 M19.07 4.93a10 10 0 010 14.14"/></svg></button>
 <button class="fixed-btn share-btn" onclick="shareApp()" title="שיתוף"><svg width="18" height="18" viewBox="0 0 24 24" fill="#222"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49" stroke="#222" stroke-width="2"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49" stroke="#222" stroke-width="2"/></svg></button>
-<audio id="bgMusic" src="hava-nagila.mp3" loop preload="auto" autoplay muted></audio>
+<audio id="bgMusic" src="hava-nagila.mp3" loop preload="auto"></audio>
 <div class="overlay" id="overlay"></div>
 <div class="streak-popup" id="streakPopup"><div class="streak-num" id="streakNum"></div><div class="streak-msg" id="streakMsg"></div></div>
 <canvas id="confetti-canvas"></canvas>
@@ -803,33 +808,21 @@ function shareApp(){
   }
 }
 
-// ===== BACKGROUND MUSIC =====
+// ===== TAP TO START (triggers music) =====
 const bgMusic = document.getElementById('bgMusic');
 bgMusic.volume = 0.08;
 let musicPlaying = false;
-// Strategy: autoplay muted (always works), then unmute ASAP
-function unmuteBg(){
-  bgMusic.muted=false;
-  bgMusic.volume=0.08;
-  if(bgMusic.paused) bgMusic.play().catch(()=>{});
-  musicPlaying=true;
-  document.getElementById('musicBtn').classList.remove('muted');
-  ['click','touchstart','touchend','mousedown','mousemove','scroll','keydown'].forEach(e=>document.removeEventListener(e,unmuteBg));
+function dismissTap(){
+  const ov=document.getElementById('tapOverlay');
+  bgMusic.play().then(()=>{musicPlaying=true;document.getElementById('musicBtn').classList.remove('muted');}).catch(()=>{});
+  ov.style.opacity='0';ov.style.transition='opacity .4s';
+  setTimeout(()=>ov.remove(),500);
 }
-// Try unmute immediately (works if user visited before)
-setTimeout(()=>{
-  bgMusic.muted=false;
-  if(!bgMusic.paused){musicPlaying=true;}
-  else{bgMusic.play().then(()=>{musicPlaying=true;bgMusic.muted=false;}).catch(()=>{});}
-},500);
-// Fallback: unmute on ANY micro-interaction (even finger hover)
-['click','touchstart','touchend','mousedown','mousemove','scroll','keydown'].forEach(e=>document.addEventListener(e,unmuteBg,{once:true,passive:true}));
 function toggleMusic(){
   const waves=document.getElementById('musicWaves');
   if(musicPlaying){bgMusic.pause();musicPlaying=false;waves.style.display='none';document.getElementById('musicBtn').classList.add('muted');}
   else{bgMusic.play().then(()=>{musicPlaying=true;waves.style.display='';document.getElementById('musicBtn').classList.remove('muted');}).catch(()=>{});}
 }
-// (music auto-start handled above with unmuteBg strategy)
 
 // ===== TICK SOUND (last 5 seconds) =====
 function playTick(){
