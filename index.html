@@ -99,7 +99,7 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
 .q-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;direction:rtl}
 .q-counter{font-size:.8rem;font-weight:600;color:var(--blue-dark)}
 .q-score{font-size:.85rem;font-weight:700;color:var(--purple)}
-.q-back-btn{background:none;border:1px solid var(--gray-border);font-family:'Rubik',sans-serif;font-size:.8rem;color:var(--blue);cursor:pointer;padding:6px 14px;border-radius:20px;margin:8px auto 0;display:block;transition:all .2s}
+.q-back-btn{background:none;border:1px solid var(--gray-border);font-family:'Rubik',sans-serif;font-size:.8rem;color:var(--blue);cursor:pointer;padding:6px 14px;border-radius:20px;margin:4px auto 0;display:block;transition:all .2s;direction:ltr}
 .q-back-btn:active{background:var(--gray-bg)}
 .q-streak{font-size:.75rem;background:var(--green);color:#222;padding:2px 8px;border-radius:10px;font-weight:600;display:none}
 .q-streak.show{display:inline-block;animation:pop .3s ease}
@@ -183,11 +183,11 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
   <h2 class="mode-title">בואו נשחק!</h2>
   <div class="mode-card" onclick="startGame('quick')">
     <div class="mode-icon">&#9889;</div>
-    <div><div class="mode-label">סיבוב מהיר</div><div class="mode-desc">30 שאלות אקראיות מכל הקטגוריות</div></div>
+    <div><div class="mode-label">סיבוב מהיר</div><div class="mode-desc">30 שאלות אקראיות + טיימר 15 שניות לשאלה</div></div>
   </div>
   <div class="mode-card" onclick="startGame('challenge')">
     <div class="mode-icon">&#127942;</div>
-    <div><div class="mode-label">אתגר</div><div class="mode-desc">25 שאלות אקראיות - בשבילכם?</div></div>
+    <div><div class="mode-label">אתגר</div><div class="mode-desc">25 שאלות אקראיות - בלי לחץ של זמן</div></div>
   </div>
   <div class="mode-card" onclick="showScreen('categories')">
     <div class="mode-icon">&#128218;</div>
@@ -229,7 +229,7 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
   <div class="q-options" id="qOptions"></div>
   <div class="q-feedback" id="qFeedback"></div>
   <div style="flex:1"></div>
-  <button class="q-back-btn" onclick="confirmExit()">חזרה לתפריט הראשי &#8594;</button>
+  <button class="q-back-btn" onclick="confirmExit()">&#8592; חזרה לתפריט הראשי</button>
   <img src="https://yba.org.il/wp-content/uploads/2021/02/Untitled-2.png" alt="" style="width:60px;height:auto;opacity:.7;margin:8px auto 0;display:block;filter:none">
 </section>
 
@@ -447,7 +447,8 @@ function startGame(mode, cat) {
   state.mode = mode;
   state.cat = cat||null;
   state.idx = 0; state.score = 0; state.streak = 0; state.bestStreak = 0; state.correct = 0;
-  state.timer = document.getElementById('timerToggle').checked;
+  state.timer = mode==='quick' ? true : document.getElementById('timerToggle').checked;
+  state.timerDuration = mode==='quick' ? 15 : 20;
   let pool;
   if(mode==='cat') {
     pool = Q.filter(q=>q.c===cat);
@@ -508,7 +509,7 @@ function loadQuestion() {
   const timerEl = document.getElementById('qTimer');
   if(state.timer){
     timerEl.classList.add('show');
-    state.timeLeft = 20;
+    state.timeLeft = state.timerDuration||20;
     updateTimerUI();
     clearInterval(state.timerInterval);
     state.timerInterval = setInterval(()=>{
@@ -522,7 +523,7 @@ function loadQuestion() {
 }
 
 function updateTimerUI(){
-  const pct = state.timeLeft/20;
+  const pct = state.timeLeft/(state.timerDuration||20);
   const circle = document.getElementById('timerCircle');
   circle.style.strokeDashoffset = 150.8*(1-pct);
   circle.style.stroke = state.timeLeft>10?'var(--blue)':state.timeLeft>5?'#F5A623':'var(--wrong)';
