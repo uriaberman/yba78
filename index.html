@@ -516,6 +516,7 @@ function loadQuestion() {
     state.timerInterval = setInterval(()=>{
       state.timeLeft--;
       updateTimerUI();
+      if(state.timeLeft<=5 && state.timeLeft>0) playTick();
       if(state.timeLeft<=0){clearInterval(state.timerInterval);timeUp();}
     },1000);
   } else {
@@ -815,6 +816,20 @@ document.addEventListener('click',function startMusic(){
   if(!musicPlaying){bgMusic.play().then(()=>{musicPlaying=true;document.getElementById('musicIcon').innerHTML='&#128266;';document.getElementById('musicBtn').classList.remove('muted');}).catch(()=>{});}
   document.removeEventListener('click',startMusic);
 },{once:true});
+
+// ===== TICK SOUND (last 5 seconds) =====
+function playTick(){
+  try{
+    const t=audioCtx.currentTime;
+    const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+    o.connect(g);g.connect(audioCtx.destination);
+    o.type='sine';
+    o.frequency.setValueAtTime(880,t);
+    g.gain.setValueAtTime(.12,t);
+    g.gain.exponentialRampToValueAtTime(.01,t+.08);
+    o.start(t);o.stop(t+.08);
+  }catch(e){}
+}
 
 // ===== GARLANDS =====
 document.querySelectorAll('.garland').forEach(g=>{
