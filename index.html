@@ -157,6 +157,11 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
 /* UTILS */
 .mt-8{margin-top:8px}.mt-16{margin-top:16px}
 .gap-8{gap:8px}
+
+/* MUSIC TOGGLE */
+.music-btn{position:fixed;bottom:14px;left:14px;z-index:50;background:var(--white);border:1px solid var(--gray-border);border-radius:50%;width:38px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.1rem;box-shadow:0 2px 8px rgba(0,0,0,.1);transition:all .2s}
+.music-btn:active{transform:scale(.9)}
+.music-btn.muted{opacity:.5}
 </style>
 </head>
 <body>
@@ -224,7 +229,7 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
   <div class="q-options" id="qOptions"></div>
   <div class="q-feedback" id="qFeedback"></div>
   <div style="flex:1"></div>
-  <button class="q-back-btn" onclick="confirmExit()">&#8592; חזרה לתפריט הראשי</button>
+  <button class="q-back-btn" onclick="confirmExit()">חזרה לתפריט הראשי &#8594;</button>
   <img src="https://yba.org.il/wp-content/uploads/2021/02/Untitled-2.png" alt="" style="width:60px;height:auto;opacity:.7;margin:8px auto 0;display:block;filter:none">
 </section>
 
@@ -257,6 +262,8 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
 
 </div>
 
+<button class="music-btn" id="musicBtn" onclick="toggleMusic()" title="מוזיקה">&#127925;</button>
+<audio id="bgMusic" src="hatikvah-game.mp3" loop preload="auto"></audio>
 <div class="overlay" id="overlay"></div>
 <div class="streak-popup" id="streakPopup"><div class="streak-num" id="streakNum"></div><div class="streak-msg" id="streakMsg"></div></div>
 <canvas id="confetti-canvas"></canvas>
@@ -752,6 +759,20 @@ function playWrongSound(){
     o2.start(t+.05);o2.stop(t+.35);
   }catch(e){}
 }
+
+// ===== BACKGROUND MUSIC =====
+const bgMusic = document.getElementById('bgMusic');
+bgMusic.volume = 0.15;
+let musicPlaying = false;
+function toggleMusic(){
+  if(musicPlaying){bgMusic.pause();musicPlaying=false;document.getElementById('musicBtn').classList.add('muted');}
+  else{bgMusic.play().then(()=>{musicPlaying=true;document.getElementById('musicBtn').classList.remove('muted');}).catch(()=>{});}
+}
+// Auto-start music on first user interaction
+document.addEventListener('click',function startMusic(){
+  if(!musicPlaying){bgMusic.play().then(()=>{musicPlaying=true;document.getElementById('musicBtn').classList.remove('muted');}).catch(()=>{});}
+  document.removeEventListener('click',startMusic);
+},{once:true});
 
 // ===== GARLANDS =====
 document.querySelectorAll('.garland').forEach(g=>{
