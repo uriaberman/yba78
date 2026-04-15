@@ -56,7 +56,7 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
 .btn-primary{background:var(--green);color:#222;box-shadow:0 4px 15px rgba(182,200,68,.3)}
 .btn-primary:hover{box-shadow:0 6px 20px rgba(182,200,68,.4);transform:translateY(-1px)}
 .btn-secondary{background:var(--blue-dark);color:var(--white)}
-.btn-outline{background:transparent;border:2px solid var(--blue-dark);color:var(--blue-dark)}
+.btn-outline{background:var(--blue-dark);border:2px solid var(--blue-dark);color:var(--white);opacity:.9}
 .btn-wa{background:#25D366;color:var(--white)}
 .btn-start{opacity:0;animation:btnPulse .6s 1.8s ease forwards}
 .btn-start.visible{opacity:1!important}
@@ -98,9 +98,9 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
 #question{padding:16px 20px;gap:0}
 .q-home{position:absolute;top:12px;left:12px;background:none;border:none;font-size:1.2rem;cursor:pointer;color:var(--blue);z-index:3;padding:4px 8px;border-radius:8px;transition:background .2s}
 .q-home:active{background:var(--gray-bg)}
-.q-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;direction:rtl}
+.q-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;direction:rtl;padding:0 4px 0 40px}
 .q-counter{font-size:.8rem;font-weight:600;color:var(--blue-dark)}
-.q-score{font-size:.85rem;font-weight:700;color:var(--purple)}
+.q-score{font-size:.85rem;font-weight:700;color:var(--purple);margin-left:auto}
 .q-streak{font-size:.75rem;background:var(--green);color:#222;padding:2px 8px;border-radius:10px;font-weight:600;display:none}
 .q-streak.show{display:inline-block;animation:pop .3s ease}
 @keyframes pop{0%{transform:scale(.5)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
@@ -142,9 +142,9 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
 .result-total{font-size:.9rem;color:#888;font-weight:500}
 .result-msg{font-size:1.15rem;font-weight:700;color:var(--purple);max-width:280px;line-height:1.4}
 .result-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%}
-.stat-box{background:var(--gray-bg);border-radius:var(--radius-sm);padding:12px;text-align:center}
-.stat-val{font-size:1.3rem;font-weight:700;color:var(--blue-dark)}
-.stat-label{font-size:.75rem;color:#888;margin-top:2px}
+.stat-box{background:rgba(0,84,131,.9);border-radius:var(--radius-sm);padding:14px;text-align:center;color:var(--white)}
+.stat-val{font-size:1.3rem;font-weight:700;color:var(--white)}
+.stat-label{font-size:.75rem;color:rgba(255,255,255,.8);margin-top:2px}
 .result-actions{display:flex;flex-direction:column;gap:10px;width:100%;margin-top:8px}
 
 /* CONFETTI */
@@ -731,13 +731,25 @@ function playCorrectSound(){
 }
 function playWrongSound(){
   try{
-    const o=audioCtx.createOscillator(),g=audioCtx.createGain();
-    o.connect(g);g.connect(audioCtx.destination);
-    o.type='sine';o.frequency.setValueAtTime(330,audioCtx.currentTime);
-    o.frequency.setValueAtTime(277,audioCtx.currentTime+.15);
-    g.gain.setValueAtTime(.12,audioCtx.currentTime);
-    g.gain.exponentialRampToValueAtTime(.01,audioCtx.currentTime+.35);
-    o.start(audioCtx.currentTime);o.stop(audioCtx.currentTime+.35);
+    const t=audioCtx.currentTime;
+    // Two-tone descending "wrong" buzzer
+    const o1=audioCtx.createOscillator(),g1=audioCtx.createGain();
+    o1.connect(g1);g1.connect(audioCtx.destination);
+    o1.type='square';
+    o1.frequency.setValueAtTime(400,t);
+    o1.frequency.linearRampToValueAtTime(200,t+.3);
+    g1.gain.setValueAtTime(.08,t);
+    g1.gain.exponentialRampToValueAtTime(.01,t+.35);
+    o1.start(t);o1.stop(t+.35);
+    // Second tone for thickness
+    const o2=audioCtx.createOscillator(),g2=audioCtx.createGain();
+    o2.connect(g2);g2.connect(audioCtx.destination);
+    o2.type='sawtooth';
+    o2.frequency.setValueAtTime(300,t+.05);
+    o2.frequency.linearRampToValueAtTime(150,t+.3);
+    g2.gain.setValueAtTime(.04,t+.05);
+    g2.gain.exponentialRampToValueAtTime(.01,t+.35);
+    o2.start(t+.05);o2.stop(t+.35);
   }catch(e){}
 }
 
