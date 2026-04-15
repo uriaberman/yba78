@@ -161,8 +161,8 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
 /* MUSIC TOGGLE */
 .fixed-btn{position:fixed;bottom:14px;z-index:50;background:var(--white);border:1px solid var(--gray-border);border-radius:50%;width:38px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.1rem;box-shadow:0 2px 8px rgba(0,0,0,.1);transition:all .2s}
 .fixed-btn:active{transform:scale(.9)}
-.music-btn{left:14px}
-.music-btn.muted{opacity:.5}
+.music-btn{left:14px;background:var(--purple);border-color:var(--purple);color:var(--white);position:relative;overflow:hidden}
+.music-btn.muted::after{content:'';position:absolute;top:50%;left:50%;width:28px;height:3px;background:#666;border-radius:2px;transform:translate(-50%,-50%) rotate(-45deg)}
 .share-btn{right:14px;background:var(--green);border-color:var(--green);color:#222}
 </style>
 </head>
@@ -262,7 +262,7 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
 
 </div>
 
-<button class="fixed-btn music-btn" id="musicBtn" onclick="toggleMusic()" title="מוזיקה"><span id="musicIcon">&#128264;</span></button>
+<button class="fixed-btn music-btn" id="musicBtn" onclick="toggleMusic()" title="מוזיקה"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><polygon points="11,5 6,9 2,9 2,15 6,15 11,19" fill="white" stroke="white"/><path id="musicWaves" d="M15.54 8.46a5 5 0 010 7.07 M19.07 4.93a10 10 0 010 14.14"/></svg></button>
 <button class="fixed-btn share-btn" onclick="shareApp()" title="שיתוף"><svg width="18" height="18" viewBox="0 0 24 24" fill="#222"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49" stroke="#222" stroke-width="2"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49" stroke="#222" stroke-width="2"/></svg></button>
 <audio id="bgMusic" src="hava-nagila.mp3" loop preload="auto"></audio>
 <div class="overlay" id="overlay"></div>
@@ -807,13 +807,13 @@ const bgMusic = document.getElementById('bgMusic');
 bgMusic.volume = 0.08;
 let musicPlaying = false;
 function toggleMusic(){
-  const icon=document.getElementById('musicIcon');
-  if(musicPlaying){bgMusic.pause();musicPlaying=false;icon.innerHTML='&#128263;';document.getElementById('musicBtn').classList.add('muted');}
-  else{bgMusic.play().then(()=>{musicPlaying=true;icon.innerHTML='&#128266;';document.getElementById('musicBtn').classList.remove('muted');}).catch(()=>{});}
+  const waves=document.getElementById('musicWaves');
+  if(musicPlaying){bgMusic.pause();musicPlaying=false;waves.style.display='none';document.getElementById('musicBtn').classList.add('muted');}
+  else{bgMusic.play().then(()=>{musicPlaying=true;waves.style.display='';document.getElementById('musicBtn').classList.remove('muted');}).catch(()=>{});}
 }
 // Auto-start music on first user interaction
 document.addEventListener('click',function startMusic(){
-  if(!musicPlaying){bgMusic.play().then(()=>{musicPlaying=true;document.getElementById('musicIcon').innerHTML='&#128266;';document.getElementById('musicBtn').classList.remove('muted');}).catch(()=>{});}
+  if(!musicPlaying){bgMusic.play().then(()=>{musicPlaying=true;document.getElementById('musicBtn').classList.remove('muted');}).catch(()=>{});}
   document.removeEventListener('click',startMusic);
 },{once:true});
 
