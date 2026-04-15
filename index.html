@@ -38,21 +38,15 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
 .flag:nth-child(1){animation-delay:0s}.flag:nth-child(2){animation-delay:.1s}.flag:nth-child(3){animation-delay:.2s}.flag:nth-child(4){animation-delay:.3s}.flag:nth-child(5){animation-delay:.4s}.flag:nth-child(6){animation-delay:.5s}.flag:nth-child(7){animation-delay:.6s}.flag:nth-child(8){animation-delay:.7s}.flag:nth-child(9){animation-delay:.8s}.flag:nth-child(10){animation-delay:.9s}.flag:nth-child(11){animation-delay:1s}.flag:nth-child(12){animation-delay:1.1s}.flag:nth-child(13){animation-delay:1.2s}.flag:nth-child(14){animation-delay:1.3s}.flag:nth-child(15){animation-delay:1.4s}.flag:nth-child(16){animation-delay:1.5s}.flag:nth-child(17){animation-delay:1.6s}.flag:nth-child(18){animation-delay:1.7s}.flag:nth-child(19){animation-delay:1.8s}.flag:nth-child(20){animation-delay:1.9s}
 @keyframes flagWave{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-3px) rotate(3deg)}}
 
-/* Background pattern - Israeli flags */
-.il-pattern{position:absolute;inset:0;opacity:.04;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='44' viewBox='0 0 60 44'%3E%3Crect width='60' height='44' fill='%23ffffff'/%3E%3Crect x='2' y='4' width='56' height='5' fill='%230038b8' rx='1'/%3E%3Crect x='2' y='35' width='56' height='5' fill='%230038b8' rx='1'/%3E%3Cpolygon points='30,12 34.5,20 30,28 25.5,20' fill='none' stroke='%230038b8' stroke-width='2'/%3E%3Cpolygon points='30,28 34.5,20 30,12 25.5,20' fill='none' stroke='%230038b8' stroke-width='2' transform='rotate(180 30 20)'/%3E%3C/svg%3E");background-size:70px 52px;pointer-events:none;z-index:0}
+/* Background pattern - Israeli flags (proper: white bg, two blue stripes, Star of David) */
+.il-pattern{position:absolute;inset:0;opacity:.045;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='56' viewBox='0 0 80 56'%3E%3Crect width='80' height='56' fill='%23ffffff'/%3E%3Crect x='0' y='6' width='80' height='6' fill='%230038b8'/%3E%3Crect x='0' y='44' width='80' height='6' fill='%230038b8'/%3E%3Cg transform='translate(40,28)'%3E%3Cpolygon points='0,-12 10.4,6 -10.4,6' fill='none' stroke='%230038b8' stroke-width='2.5'/%3E%3Cpolygon points='0,12 10.4,-6 -10.4,-6' fill='none' stroke='%230038b8' stroke-width='2.5'/%3E%3C/g%3E%3C/svg%3E");background-size:90px 64px;pointer-events:none;z-index:0}
 
 /* SPLASH */
 #splash{justify-content:center;align-items:center;text-align:center;background:linear-gradient(135deg,var(--white) 0%,#f5f0f8 50%,#eef5ff 100%);gap:4px}
-.splash-logo{width:100px;height:auto;opacity:0;transform:scale(.7);animation:logoIn .8s .3s ease forwards;position:relative;z-index:1}
-@keyframes logoIn{to{opacity:1;transform:scale(1)}}
+.splash-logo{width:130px;height:auto;opacity:0;transform:scale(.5) translateY(20px);animation:logoIn 1s .3s cubic-bezier(.175,.885,.32,1.275) forwards;position:relative;z-index:1;margin-bottom:4px}
+@keyframes logoIn{0%{opacity:0;transform:scale(.5) translateY(20px)}60%{opacity:1;transform:scale(1.08) translateY(-5px)}100%{opacity:1;transform:scale(1) translateY(0)}}
 .splash-title{font-size:1.7rem;font-weight:800;color:var(--blue-dark);opacity:0;transform:translateY(20px);animation:slideUp .5s .9s ease forwards}
 .splash-sub{font-size:.95rem;color:var(--purple);font-weight:500;opacity:0;animation:fadeIn .4s 1.2s ease forwards}
-.splash-deco{position:absolute;font-size:1.3rem;opacity:0;animation:decoIn .6s ease forwards}
-.splash-deco:nth-child(2){top:14%;right:8%;animation-delay:1.6s}
-.splash-deco:nth-child(3){top:18%;left:6%;animation-delay:1.8s}
-.splash-deco:nth-child(4){bottom:20%;right:10%;animation-delay:2s}
-.splash-deco:nth-child(5){bottom:16%;left:8%;animation-delay:2.2s}
-@keyframes decoIn{to{opacity:.25}}
 @keyframes slideUp{to{opacity:1;transform:translateY(0)}}
 @keyframes fadeIn{to{opacity:1}}
 
@@ -106,7 +100,7 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
 .q-home:active{background:var(--gray-bg)}
 .q-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
 .q-counter{font-size:.8rem;font-weight:600;color:var(--blue-dark)}
-.q-score{font-size:.85rem;font-weight:700;color:var(--purple);display:flex;align-items:center;gap:4px}
+.q-score{font-size:.85rem;font-weight:700;color:var(--purple);display:flex;align-items:center;gap:4px;direction:ltr}
 .q-streak{font-size:.75rem;background:var(--green);color:#222;padding:2px 8px;border-radius:10px;font-weight:600;display:none}
 .q-streak.show{display:inline-block;animation:pop .3s ease}
 @keyframes pop{0%{transform:scale(.5)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
@@ -172,10 +166,6 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
 <section class="screen active" id="splash">
   <div class="il-pattern"></div>
   <div class="garland" id="garland"></div>
-  <span class="splash-deco" style="color:var(--blue-dark)">&#10070;</span>
-  <span class="splash-deco" style="color:var(--purple)">&#10070;</span>
-  <span class="splash-deco" style="color:var(--green)">&#10070;</span>
-  <span class="splash-deco" style="color:var(--blue)">&#10070;</span>
   <img class="splash-logo" src="https://yba.org.il/wp-content/uploads/2021/02/Untitled-2.png" alt="מרכז ישיבות ואולפנות בני עקיבא" onerror="this.style.display='none'">
   <h1 class="splash-title">חידון יום העצמאות</h1>
   <p class="splash-sub">78 שאלות. 5 קטגוריות. כמה באמת אתם יודעים?</p>
@@ -188,7 +178,7 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
   <h2 class="mode-title">בואו נשחק!</h2>
   <div class="mode-card" onclick="startGame('quick')">
     <div class="mode-icon">&#9889;</div>
-    <div><div class="mode-label">סיבוב מהיר</div><div class="mode-desc">10 שאלות אקראיות מכל הקטגוריות</div></div>
+    <div><div class="mode-label">סיבוב מהיר</div><div class="mode-desc">30 שאלות אקראיות מכל הקטגוריות</div></div>
   </div>
   <div class="mode-card" onclick="startGame('challenge')">
     <div class="mode-icon">&#127942;</div>
@@ -222,7 +212,7 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
   <button class="q-home" onclick="confirmExit()" title="חזרה למסך הבית">&#8962;</button>
   <div class="q-top">
     <span class="q-counter" id="qCounter"></span>
-    <span class="q-score" id="qScore">0</span>
+    <span class="q-score"><span style="font-weight:500;color:#888;font-size:.75rem">ניקוד: </span><span id="qScore">0</span></span>
     <span class="q-streak" id="qStreak"></span>
   </div>
   <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
@@ -234,6 +224,7 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
   <div class="q-text" id="qText"></div>
   <div class="q-options" id="qOptions"></div>
   <div class="q-feedback" id="qFeedback"></div>
+  <img src="https://yba.org.il/wp-content/uploads/2021/02/Untitled-2.png" alt="" style="width:50px;height:auto;opacity:.25;margin:8px auto 0;display:block">
 </section>
 
 <!-- RESULTS -->
@@ -367,20 +358,21 @@ const Q = [
 
 // ===== MICRO COPY =====
 const MC_CORRECT = [
-  'בום! מאיפה הידע הזה?',
-  'נכון! מי צריך גוגל בכלל',
-  'בול פגיעה! ממשיכים',
-  'קלאס! עוד אחת כזו',
-  'וואלה מדויק! כל הכבוד',
-  'נקודה! הלאה לבאה'
+  'טו-אוב! ככה זה כשיודעים',
+  'בום! תשובה חזקה',
+  'נכון בטירוף! נקסט',
+  'מה הסיפור, ויקיפדיה מהלכת?',
+  'נכון! ואפילו לא חשבת פעמיים, וואוו!',
+  'כל הכבוד! זה היה קל, אה?',
+  'יואו! מאיפה הידע הזה?'
 ];
 const MC_WRONG = [
-  'לא הפעם! אבל עכשיו כבר ברור',
-  'אופס! קרוב אבל לא מספיק',
-  'פספוס! הבאה בפנים',
-  'טעות קטנה, ממשיכים הלאה',
-  'לא מדויק! אבל שווה לזכור',
-  'קרוב! בפעם הבאה זה ייכנס'
+  'אאוץ\'! קרוב אבל לא',
+  'טעות! אבל ככה לומדים',
+  'לאאא! חבל, זה היה קרוב',
+  'ניסיון יפה! אבל לא מספיק',
+  'טעית, אבל הבאה שלך!',
+  'ממממ לא בדיוק, נקסט טיים'
 ];
 const MC_STREAK = {
   3:'שלושה ברצף! ממשיכים!',
@@ -457,7 +449,7 @@ function startGame(mode, cat) {
   } else {
     pool = [...Q];
     shuffle(pool);
-    if(mode==='quick') pool = pool.slice(0,10);
+    if(mode==='quick') pool = pool.slice(0,30);
     else if(mode==='challenge') pool = pool.slice(0,25);
   }
   state.questions = pool;
@@ -565,6 +557,7 @@ function handleAnswer(chosenIdx, el) {
     if(state.streak>state.bestStreak) state.bestStreak = state.streak;
     document.getElementById('qScore').textContent = state.score;
     showFeedback(true);
+    playCorrectSound();
     miniConfetti();
     // streak popup
     if(MC_STREAK[state.streak]) setTimeout(()=>showStreak(state.streak),400);
@@ -576,6 +569,7 @@ function handleAnswer(chosenIdx, el) {
     });
     state.streak = 0;
     showFeedback(false);
+    playWrongSound();
   }
   const streakEl = document.getElementById('qStreak');
   if(state.streak>=3){streakEl.textContent=`${state.streak} ברצף`;streakEl.classList.add('show');}
@@ -694,11 +688,56 @@ function showLeaderboard(){
 }
 
 function promptLeaderboard(){
-  const name = prompt('מה השם המלא?');
-  if(!name || !name.trim()) return;
-  const institution = prompt('מוסד לימודים?') || '';
-  saveToLeaderboard(name.trim(), institution.trim(), state.score, state.correct, state.questions.length);
+  const overlay = document.getElementById('overlay');
+  const popup = document.getElementById('streakPopup');
+  popup.innerHTML = `
+    <div style="font-size:1.3rem;font-weight:700;color:var(--blue-dark);margin-bottom:12px">שמירה בטבלת השיאים</div>
+    <input id="lbName" type="text" placeholder="שם מלא" style="width:100%;padding:10px 14px;border:2px solid var(--gray-border);border-radius:10px;font-family:Rubik;font-size:.95rem;margin-bottom:8px;text-align:right;direction:rtl" autofocus>
+    <input id="lbInst" type="text" placeholder="מוסד לימודים" style="width:100%;padding:10px 14px;border:2px solid var(--gray-border);border-radius:10px;font-family:Rubik;font-size:.95rem;margin-bottom:14px;text-align:right;direction:rtl">
+    <button onclick="submitLeaderboard()" style="width:100%;padding:12px;background:var(--green);border:none;border-radius:10px;font-family:Rubik;font-size:1rem;font-weight:600;cursor:pointer">שמירה</button>
+    <button onclick="closeLbPopup()" style="width:100%;padding:8px;background:none;border:none;font-family:Rubik;font-size:.85rem;color:#888;cursor:pointer;margin-top:4px">ביטול</button>
+  `;
+  popup.classList.add('show');
+  overlay.classList.add('show');
+  setTimeout(()=>{const i=document.getElementById('lbName');if(i)i.focus();},300);
+}
+function submitLeaderboard(){
+  const name = document.getElementById('lbName').value.trim();
+  const inst = document.getElementById('lbInst').value.trim();
+  if(!name){document.getElementById('lbName').style.borderColor='var(--wrong)';return;}
+  saveToLeaderboard(name, inst, state.score, state.correct, state.questions.length);
+  closeLbPopup();
   showLeaderboard();
+}
+function closeLbPopup(){
+  document.getElementById('streakPopup').classList.remove('show');
+  document.getElementById('overlay').classList.remove('show');
+}
+
+// ===== SOUNDS =====
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+function playCorrectSound(){
+  try{
+    const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+    o.connect(g);g.connect(audioCtx.destination);
+    o.type='sine';o.frequency.setValueAtTime(523,audioCtx.currentTime);
+    o.frequency.setValueAtTime(659,audioCtx.currentTime+.1);
+    o.frequency.setValueAtTime(784,audioCtx.currentTime+.2);
+    g.gain.setValueAtTime(.15,audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(.01,audioCtx.currentTime+.4);
+    o.start(audioCtx.currentTime);o.stop(audioCtx.currentTime+.4);
+  }catch(e){}
+}
+function playWrongSound(){
+  try{
+    const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+    o.connect(g);g.connect(audioCtx.destination);
+    o.type='sine';o.frequency.setValueAtTime(330,audioCtx.currentTime);
+    o.frequency.setValueAtTime(277,audioCtx.currentTime+.15);
+    g.gain.setValueAtTime(.12,audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(.01,audioCtx.currentTime+.35);
+    o.start(audioCtx.currentTime);o.stop(audioCtx.currentTime+.35);
+  }catch(e){}
 }
 
 // ===== GARLANDS =====
