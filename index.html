@@ -59,8 +59,8 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
 .btn-outline{background:var(--blue-dark);border:2px solid var(--blue-dark);color:var(--white);opacity:.9}
 .btn-wa{background:#25D366;color:var(--white)}
 .btn-start{opacity:0;animation:btnPulse .6s 1.8s ease forwards}
-.btn-start.visible{opacity:1!important}
-@keyframes btnPulse{0%{opacity:0;transform:scale(.9)}60%{opacity:1;transform:scale(1.03)}100%{opacity:1;transform:scale(1)}}
+.btn-start.visible{opacity:.9!important}
+@keyframes btnPulse{0%{opacity:0;transform:scale(.9)}60%{opacity:.9;transform:scale(1.03)}100%{opacity:.9;transform:scale(1)}}
 .glow{animation:glow 2s 3s ease-in-out infinite}
 @keyframes glow{0%,100%{box-shadow:0 4px 15px rgba(182,200,68,.3)}50%{box-shadow:0 4px 25px rgba(182,200,68,.6)}}
 
@@ -183,11 +183,11 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
   <h2 class="mode-title">בואו נשחק!</h2>
   <div class="mode-card" onclick="startGame('quick')">
     <div class="mode-icon">&#9889;</div>
-    <div><div class="mode-label">סיבוב מהיר</div><div class="mode-desc">30 שאלות אקראיות + טיימר 15 שניות לשאלה</div></div>
+    <div><div class="mode-label">סיבוב מהיר</div><div class="mode-desc">30 שאלות, 10 שניות לכל שאלה</div></div>
   </div>
   <div class="mode-card" onclick="startGame('challenge')">
     <div class="mode-icon">&#127942;</div>
-    <div><div class="mode-label">אתגר</div><div class="mode-desc">25 שאלות אקראיות - בלי לחץ של זמן</div></div>
+    <div><div class="mode-label">אתגר</div><div class="mode-desc">25 שאלות אקראיות</div></div>
   </div>
   <div class="mode-card" onclick="showScreen('categories')">
     <div class="mode-icon">&#128218;</div>
@@ -263,7 +263,7 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
 </div>
 
 <button class="music-btn" id="musicBtn" onclick="toggleMusic()" title="מוזיקה"><span id="musicIcon">&#128264;</span></button>
-<audio id="bgMusic" src="hava-nagila-game.mp3" loop preload="auto"></audio>
+<audio id="bgMusic" src="hava-nagila.mp3" loop preload="auto"></audio>
 <div class="overlay" id="overlay"></div>
 <div class="streak-popup" id="streakPopup"><div class="streak-num" id="streakNum"></div><div class="streak-msg" id="streakMsg"></div></div>
 <canvas id="confetti-canvas"></canvas>
@@ -448,7 +448,7 @@ function startGame(mode, cat) {
   state.cat = cat||null;
   state.idx = 0; state.score = 0; state.streak = 0; state.bestStreak = 0; state.correct = 0;
   state.timer = mode==='quick' ? true : document.getElementById('timerToggle').checked;
-  state.timerDuration = mode==='quick' ? 15 : 20;
+  state.timerDuration = mode==='quick' ? 10 : 20;
   let pool;
   if(mode==='cat') {
     pool = Q.filter(q=>q.c===cat);
@@ -669,9 +669,25 @@ function replay(){
 
 // ===== CONFIRM EXIT =====
 function confirmExit(){
-  if(state.idx > 0 && !confirm('בטוח? ההתקדמות לא תישמר')) return;
+  if(state.idx > 0){
+    showStyledConfirm('בטוח רוצים לצאת?','ההתקדמות לא תישמר',()=>{clearInterval(state.timerInterval);showScreen('mode');});
+    return;
+  }
   clearInterval(state.timerInterval);
   showScreen('mode');
+}
+function showStyledConfirm(title,msg,onConfirm){
+  const popup=document.getElementById('streakPopup');
+  const overlay=document.getElementById('overlay');
+  popup.innerHTML=`
+    <div style="font-size:1.2rem;font-weight:700;color:var(--blue-dark);margin-bottom:6px">${title}</div>
+    <div style="font-size:.9rem;color:#666;margin-bottom:16px">${msg}</div>
+    <div style="display:flex;gap:10px">
+      <button onclick="document.getElementById('streakPopup').classList.remove('show');document.getElementById('overlay').classList.remove('show')" style="flex:1;padding:10px;background:var(--gray-bg);border:none;border-radius:10px;font-family:Rubik;font-size:.9rem;font-weight:600;cursor:pointer;color:var(--gray-text)">ביטול</button>
+      <button id="confirmYes" style="flex:1;padding:10px;background:var(--wrong);border:none;border-radius:10px;font-family:Rubik;font-size:.9rem;font-weight:600;cursor:pointer;color:white">יציאה</button>
+    </div>`;
+  popup.classList.add('show');overlay.classList.add('show');
+  document.getElementById('confirmYes').onclick=()=>{popup.classList.remove('show');overlay.classList.remove('show');onConfirm();};
 }
 
 // ===== LEADERBOARD =====
@@ -782,7 +798,7 @@ document.querySelectorAll('.garland').forEach(g=>{
 });
 
 // ===== FALLBACK: ensure start button visible =====
-setTimeout(()=>{const b=document.querySelector('.btn-start');if(b)b.style.opacity='1';},2500);
+setTimeout(()=>{const b=document.querySelector('.btn-start');if(b)b.style.opacity='.9';},2500);
 
 // ===== CONFETTI =====
 const canvas = document.getElementById('confetti-canvas');
