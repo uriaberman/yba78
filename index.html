@@ -159,9 +159,11 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
 .gap-8{gap:8px}
 
 /* MUSIC TOGGLE */
-.music-btn{position:fixed;bottom:14px;left:14px;z-index:50;background:var(--white);border:1px solid var(--gray-border);border-radius:50%;width:38px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.1rem;box-shadow:0 2px 8px rgba(0,0,0,.1);transition:all .2s}
-.music-btn:active{transform:scale(.9)}
+.fixed-btn{position:fixed;bottom:14px;z-index:50;background:var(--white);border:1px solid var(--gray-border);border-radius:50%;width:38px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.1rem;box-shadow:0 2px 8px rgba(0,0,0,.1);transition:all .2s}
+.fixed-btn:active{transform:scale(.9)}
+.music-btn{left:14px}
 .music-btn.muted{opacity:.5}
+.share-btn{right:14px;background:var(--green);border-color:var(--green);color:#222}
 </style>
 </head>
 <body>
@@ -260,7 +262,8 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
 
 </div>
 
-<button class="music-btn" id="musicBtn" onclick="toggleMusic()" title="מוזיקה"><span id="musicIcon">&#128264;</span></button>
+<button class="fixed-btn music-btn" id="musicBtn" onclick="toggleMusic()" title="מוזיקה"><span id="musicIcon">&#128264;</span></button>
+<button class="fixed-btn share-btn" onclick="shareApp()" title="שיתוף">&#x1F4E4;</button>
 <audio id="bgMusic" src="hava-nagila.mp3" loop preload="auto"></audio>
 <div class="overlay" id="overlay"></div>
 <div class="streak-popup" id="streakPopup"><div class="streak-num" id="streakNum"></div><div class="streak-msg" id="streakMsg"></div></div>
@@ -786,6 +789,16 @@ function playWrongSound(){
     g2.gain.exponentialRampToValueAtTime(.01,t+.35);
     o2.start(t+.05);o2.stop(t+.35);
   }catch(e){}
+}
+
+// ===== SHARE APP =====
+function shareApp(){
+  const text='חידון יום העצמאות | מרכז ישיבות ואולפנות בני עקיבא\n\n78 שאלות. 5 קטגוריות. חושבים שתצליחו?\n\nhttps://yba78.vercel.app';
+  if(navigator.share){
+    navigator.share({title:'חידון יום העצמאות',text}).catch(()=>{});
+  } else {
+    window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank');
+  }
 }
 
 // ===== BACKGROUND MUSIC =====
