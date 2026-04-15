@@ -159,11 +159,12 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
 .gap-8{gap:8px}
 
 /* MUSIC TOGGLE */
-.fixed-btn{position:fixed;bottom:14px;z-index:50;background:var(--white);border:1px solid var(--gray-border);border-radius:50%;width:38px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.1rem;box-shadow:0 2px 8px rgba(0,0,0,.1);transition:all .2s}
+.fixed-btn{position:fixed;bottom:14px;z-index:50;border:none;border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.15);transition:all .2s}
 .fixed-btn:active{transform:scale(.9)}
-.music-btn{left:14px;background:var(--purple);border-color:var(--purple);color:var(--white);position:relative;overflow:hidden}
-.music-btn.muted::after{content:'';position:absolute;top:50%;left:50%;width:28px;height:3px;background:#666;border-radius:2px;transform:translate(-50%,-50%) rotate(-45deg)}
-.share-btn{right:14px;background:var(--green);border-color:var(--green);color:#222}
+.music-btn{left:14px;background:var(--purple)}
+.music-btn.muted{opacity:.6}
+.music-btn.muted svg path{display:none}
+.share-btn{right:14px;background:var(--green)}
 </style>
 </head>
 <body>
