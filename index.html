@@ -194,7 +194,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <h1 class="splash-title">חידון יום העצמאות</h1>
   <p class="splash-sub">78 שאלות. 5 קטגוריות. כמה באמת אתם יודעים?</p>
   <button class="btn btn-primary btn-start glow" onclick="showScreen('mode')" style="max-width:260px;margin-top:16px">יאללה, מתחילים!</button>
-  <div style="position:absolute;bottom:0;left:0;right:0;text-align:center;font-size:.65rem;color:#999;letter-spacing:.5px;padding:10px 0;background:var(--white)">Powered by Zeliger Shomron</div>
 </section>
 
 <!-- MODE SELECT -->
@@ -280,6 +279,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 </div>
 
+<div id="credit" style="position:fixed;bottom:0;left:0;right:0;text-align:center;font-size:.65rem;color:#999;letter-spacing:.5px;padding:8px 0;background:rgba(255,255,255,.92);z-index:49;pointer-events:none">Powered by Zeliger Shomron</div>
 <button class="fixed-btn music-btn" id="musicBtn" onclick="toggleMusic()" title="מוזיקה"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><polygon points="11,5 6,9 2,9 2,15 6,15 11,19" fill="white" stroke="white"/><path id="musicWaves" d="M15.54 8.46a5 5 0 010 7.07 M19.07 4.93a10 10 0 010 14.14"/></svg></button>
 <button class="fixed-btn share-btn" onclick="shareApp()" title="שיתוף"><svg width="18" height="18" viewBox="0 0 24 24" fill="#222"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49" stroke="#222" stroke-width="2"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49" stroke="#222" stroke-width="2"/></svg></button>
 <audio id="bgMusic" src="hava-nagila.mp3" loop preload="auto"></audio>
@@ -763,6 +763,7 @@ function closeLbPopup(){
 // ===== SOUNDS =====
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 function playCorrectSound(){
+  if(soundMuted) return;
   try{
     const t=audioCtx.currentTime;
     // Bright rising arpeggio - 4 notes
@@ -788,6 +789,7 @@ function playCorrectSound(){
   }catch(e){}
 }
 function playWrongSound(){
+  if(soundMuted) return;
   try{
     const t=audioCtx.currentTime;
     // Two-tone descending "wrong" buzzer
@@ -839,14 +841,23 @@ function dismissTap(){
   ov.style.opacity='0';ov.style.transition='opacity .4s';
   setTimeout(()=>ov.remove(),500);
 }
+let soundMuted = false;
 function toggleMusic(){
   const waves=document.getElementById('musicWaves');
-  if(musicPlaying){bgMusic.pause();musicPlaying=false;waves.style.display='none';document.getElementById('musicBtn').classList.add('muted');}
-  else{bgMusic.play().then(()=>{musicPlaying=true;waves.style.display='';document.getElementById('musicBtn').classList.remove('muted');}).catch(()=>{});}
+  if(!soundMuted){
+    // Go to mute: pause music + mute sfx
+    bgMusic.pause();musicPlaying=false;soundMuted=true;
+    waves.style.display='none';document.getElementById('musicBtn').classList.add('muted');
+  } else {
+    // Go to sound: play music + unmute sfx
+    soundMuted=false;
+    bgMusic.play().then(()=>{musicPlaying=true;waves.style.display='';document.getElementById('musicBtn').classList.remove('muted');}).catch(()=>{});
+  }
 }
 
 // ===== TICK SOUND (last 5 seconds) =====
 function playTick(){
+  if(soundMuted) return;
   try{
     const t=audioCtx.currentTime;
     const o=audioCtx.createOscillator(),g=audioCtx.createGain();
