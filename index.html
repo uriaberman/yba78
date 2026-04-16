@@ -675,7 +675,15 @@ function showResults(){
 
 // ===== SHARE =====
 function shareWA(){
-  const pct = Math.round((state.correct/state.questions.length)*100);
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({
+    event:'yba78app_whatsapp_share_click',
+    app_id:'yba78app',
+    button_type:'whatsapp_share',
+    score:state.correct,
+    total:state.questions.length,
+    pct:Math.round((state.correct/state.questions.length)*100)
+  });
   const text = `\u{2728} חידון יום העצמאות | מרכז ישיבות ואולפנות בני עקיבא\n\nהצלחתי ${state.correct} מתוך ${state.questions.length} - כמה אתם תצליחו?\n\n\u{1F449} ${location.href.split('?')[0]}`;
   if(navigator.share){
     navigator.share({title:'חידון יום העצמאות',text});
@@ -815,6 +823,12 @@ function playWrongSound(){
 
 // ===== SHARE APP =====
 function shareApp(){
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({
+    event:'yba78app_share_click',
+    app_id:'yba78app',
+    button_type:'general_share'
+  });
   const text='חידון יום העצמאות | מרכז ישיבות ואולפנות בני עקיבא\n\n78 שאלות. 5 קטגוריות. חושבים שתצליחו?\n\nhttps://yba78.vercel.app';
   if(navigator.share){
     navigator.share({title:'חידון יום העצמאות',text}).catch(()=>{});
