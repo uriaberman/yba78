@@ -60,14 +60,14 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
 /* BUTTONS */
 .btn{display:block;width:100%;padding:14px 20px;border:none;border-radius:var(--radius);font-family:'Rubik',sans-serif;font-size:1.05rem;font-weight:600;cursor:pointer;transition:all .2s ease;touch-action:manipulation;text-align:center}
 .btn:active{transform:scale(.97)}
-.btn-primary{background:var(--green);color:#222;box-shadow:0 4px 15px rgba(182,200,68,.3);opacity:.95}
+.btn-primary{background:var(--green);color:#222;box-shadow:0 4px 15px rgba(182,200,68,.3);opacity:1}
 .btn-primary:hover{box-shadow:0 6px 20px rgba(182,200,68,.4);transform:translateY(-1px)}
-.btn-secondary{background:var(--blue-dark);color:var(--white)}
-.btn-outline{background:var(--blue-dark);border:2px solid var(--blue-dark);color:var(--white);opacity:.95}
-.btn-wa{background:#25D366;color:var(--white)}
+.btn-secondary{background:var(--blue-dark);color:var(--white);opacity:1}
+.btn-outline{background:var(--blue-dark);border:2px solid var(--blue-dark);color:var(--white);opacity:1}
+.btn-wa{background:#25D366;color:var(--white);opacity:1}
 .btn-start{opacity:0;animation:btnPulse .6s 1.8s ease forwards}
-.btn-start.visible{opacity:.95!important}
-@keyframes btnPulse{0%{opacity:0;transform:scale(.9)}60%{opacity:.95;transform:scale(1.03)}100%{opacity:.95;transform:scale(1)}}
+.btn-start.visible{opacity:1!important}
+@keyframes btnPulse{0%{opacity:0;transform:scale(.9)}60%{opacity:1;transform:scale(1.03)}100%{opacity:1;transform:scale(1)}}
 .glow{animation:glow 2s 3s ease-in-out infinite}
 @keyframes glow{0%,100%{box-shadow:0 4px 15px rgba(182,200,68,.3)}50%{box-shadow:0 4px 25px rgba(182,200,68,.6)}}
 
@@ -149,7 +149,7 @@ body{display:flex;justify-content:center;align-items:center;min-height:100dvh}
 .result-total{font-size:.9rem;color:#888;font-weight:500}
 .result-msg{font-size:1.15rem;font-weight:700;color:var(--purple);max-width:280px;line-height:1.4}
 .result-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%}
-.stat-box{background:rgba(0,84,131,.95);border-radius:var(--radius-sm);padding:14px;text-align:center;color:var(--white)}
+.stat-box{background:rgba(0,84,131,1);border-radius:var(--radius-sm);padding:14px;text-align:center;color:var(--white)}
 .stat-val{font-size:1.3rem;font-weight:700;color:var(--white)}
 .stat-label{font-size:.75rem;color:rgba(255,255,255,.8);margin-top:2px}
 .result-actions{display:flex;flex-direction:column;gap:10px;width:100%;margin-top:8px}
@@ -890,7 +890,7 @@ document.querySelectorAll('.garland').forEach(g=>{
 });
 
 // ===== FALLBACK: ensure start button visible =====
-setTimeout(()=>{const b=document.querySelector('.btn-start');if(b)b.style.opacity='.95';},2500);
+setTimeout(()=>{const b=document.querySelector('.btn-start');if(b)b.style.opacity='1';},2500);
 
 // ===== CONFETTI =====
 const canvas = document.getElementById('confetti-canvas');
