@@ -444,16 +444,18 @@ function showScreen(id) {
     state.screen = id;
     if (id==='categories') buildCatGrid();
     if (id==='leaderboardScreen') {
-      const lb = JSON.parse(localStorage.getItem('yba78_leaderboard')||'[]');
       const el = document.getElementById('lbScreenTable');
-      if(!lb.length){el.innerHTML='<p style="color:#888;text-align:center;padding:40px">עדיין אין שיאים.<br>תשחקו ותהיו הראשונים!</p>';return;}
-      let html='<table style="width:100%;border-collapse:collapse;font-size:.85rem"><thead><tr style="color:var(--blue-dark);border-bottom:2px solid var(--blue-dark)"><th style="padding:8px;text-align:right">#</th><th style="padding:8px;text-align:right">שם</th><th style="padding:8px;text-align:right">מוסד</th><th style="padding:8px;text-align:center">ניקוד</th><th style="padding:8px;text-align:center">%</th></tr></thead><tbody>';
-      lb.forEach((r,i)=>{
-        const medal = i===0?'\u{1F947}':i===1?'\u{1F948}':i===2?'\u{1F949}':'';
-        html+=`<tr style="border-top:1px solid var(--gray-border)${i<3?';font-weight:600;background:rgba(182,200,68,.06)':''}"><td style="padding:8px">${medal||i+1}</td><td style="padding:8px">${r.name}</td><td style="padding:8px;font-size:.75rem;color:#888">${r.institution||''}</td><td style="padding:8px;text-align:center;color:var(--purple);font-weight:700">${r.score}</td><td style="padding:8px;text-align:center">${r.pct}%</td></tr>`;
+      el.innerHTML = '<p style="color:#888;text-align:center;padding:40px">טוען טבלת שיאים...</p>';
+      fetchLeaderboard().then(lb=>{
+        if(!lb.length){el.innerHTML='<p style="color:#888;text-align:center;padding:40px">עדיין אין שיאים.<br>תשחקו ותהיו הראשונים!</p>';return;}
+        let html='<table style="width:100%;border-collapse:collapse;font-size:.85rem"><thead><tr style="color:var(--blue-dark);border-bottom:2px solid var(--blue-dark)"><th style="padding:8px;text-align:right">#</th><th style="padding:8px;text-align:right">שם</th><th style="padding:8px;text-align:right">מוסד</th><th style="padding:8px;text-align:center">ניקוד</th><th style="padding:8px;text-align:center">%</th></tr></thead><tbody>';
+        lb.forEach((r,i)=>{
+          const medal = i===0?'\u{1F947}':i===1?'\u{1F948}':i===2?'\u{1F949}':'';
+          html+=`<tr style="border-top:1px solid var(--gray-border)${i<3?';font-weight:600;background:rgba(182,200,68,.06)':''}"><td style="padding:8px">${medal||i+1}</td><td style="padding:8px">${r.name}</td><td style="padding:8px;font-size:.75rem;color:#888">${r.institution||''}</td><td style="padding:8px;text-align:center;color:var(--purple);font-weight:700">${r.score}</td><td style="padding:8px;text-align:center">${r.pct}%</td></tr>`;
+        });
+        html+='</tbody></table>';
+        el.innerHTML = html;
       });
-      html+='</tbody></table>';
-      el.innerHTML = html;
     }
   },50);
 }
@@ -730,18 +732,29 @@ function showStyledConfirm(title,msg,onConfirm){
   document.getElementById('confirmYes').onclick=()=>{popup.classList.remove('show');overlay.classList.remove('show');onConfirm();};
 }
 
-// ===== LEADERBOARD =====
-function saveToLeaderboard(name, institution, score, correct, total){
-  let lb = JSON.parse(localStorage.getItem('yba78_leaderboard')||'[]');
-  lb.push({name, institution, score, correct, total, pct:Math.round((correct/total)*100), date:new Date().toLocaleDateString('he-IL')});
-  lb.sort((a,b)=>b.score-a.score);
-  lb = lb.slice(0,10); // top 10
-  localStorage.setItem('yba78_leaderboard', JSON.stringify(lb));
+// ===== LEADERBOARD (Supabase - global, all users see same) =====
+const SUPABASE_URL='https://pjkphcufiegwomhouprz.supabase.co';
+const SUPABASE_KEY='sb_publishable_cMUdCKmqIGFfY8J1iZyKmQ_cF8Esg2a';
+
+async function fetchLeaderboard(){
+  try{
+    const res=await fetch(`${SUPABASE_URL}/rest/v1/yba78_leaderboard?select=*&order=score.desc&limit=10`,{headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`}});
+    if(!res.ok) return [];
+    return await res.json();
+  }catch(e){return [];}
 }
 
-function showLeaderboard(){
-  const lb = JSON.parse(localStorage.getItem('yba78_leaderboard')||'[]');
+async function saveToLeaderboard(name, institution, score, correct, total){
+  const pct=Math.round((correct/total)*100);
+  try{
+    await fetch(`${SUPABASE_URL}/rest/v1/yba78_leaderboard`,{method:'POST',headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({name,institution:institution||null,score,correct,total,pct})});
+  }catch(e){}
+}
+
+async function showLeaderboard(){
   const lbEl = document.getElementById('leaderboard');
+  lbEl.innerHTML='<p style="color:#888;text-align:center;padding:16px">טוען...</p>';
+  const lb = await fetchLeaderboard();
   if(!lb.length){lbEl.innerHTML='<p style="color:#888;text-align:center;padding:16px">עדיין אין שיאים. תהיו הראשונים!</p>';return;}
   let html='<table style="width:100%;border-collapse:collapse;font-size:.8rem"><thead><tr style="color:var(--blue-dark)"><th style="padding:6px;text-align:right">#</th><th style="padding:6px;text-align:right">שם</th><th style="padding:6px;text-align:right">מוסד</th><th style="padding:6px;text-align:center">ניקוד</th><th style="padding:6px;text-align:center">%</th></tr></thead><tbody>';
   lb.forEach((r,i)=>{
@@ -766,11 +779,11 @@ function promptLeaderboard(){
   overlay.classList.add('show');
   setTimeout(()=>{const i=document.getElementById('lbName');if(i)i.focus();},300);
 }
-function submitLeaderboard(){
+async function submitLeaderboard(){
   const name = document.getElementById('lbName').value.trim();
   const inst = document.getElementById('lbInst').value.trim();
   if(!name){document.getElementById('lbName').style.borderColor='var(--wrong)';return;}
-  saveToLeaderboard(name, inst, state.score, state.correct, state.questions.length);
+  await saveToLeaderboard(name, inst, state.score, state.correct, state.questions.length);
   closeLbPopup();
   showLeaderboard();
 }
