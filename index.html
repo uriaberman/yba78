@@ -744,10 +744,10 @@ async function fetchLeaderboard(){
   }catch(e){return [];}
 }
 
-async function saveToLeaderboard(name, institution, score, correct, total){
+async function saveToLeaderboard(name, institution, score, correct, total, email){
   const pct=Math.round((correct/total)*100);
   try{
-    await fetch(`${SUPABASE_URL}/rest/v1/yba78_leaderboard`,{method:'POST',headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({name,institution:institution||null,score,correct,total,pct})});
+    await fetch(`${SUPABASE_URL}/rest/v1/yba78_leaderboard`,{method:'POST',headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({name,institution:institution||null,email:email||null,score,correct,total,pct})});
   }catch(e){}
 }
 
@@ -768,22 +768,33 @@ async function showLeaderboard(){
 function promptLeaderboard(){
   const overlay = document.getElementById('overlay');
   const popup = document.getElementById('streakPopup');
+  const inp='width:100%;padding:10px 14px;border:2px solid var(--gray-border);border-radius:10px;font-family:Rubik;font-size:.95rem;margin-bottom:8px;text-align:right;direction:rtl';
   popup.innerHTML = `
     <div style="font-size:1.3rem;font-weight:700;color:var(--blue-dark);margin-bottom:12px">שמירה בטבלת השיאים</div>
-    <input id="lbName" type="text" placeholder="שם מלא" style="width:100%;padding:10px 14px;border:2px solid var(--gray-border);border-radius:10px;font-family:Rubik;font-size:.95rem;margin-bottom:8px;text-align:right;direction:rtl" autofocus>
-    <input id="lbInst" type="text" placeholder="מוסד לימודים" style="width:100%;padding:10px 14px;border:2px solid var(--gray-border);border-radius:10px;font-family:Rubik;font-size:.95rem;margin-bottom:14px;text-align:right;direction:rtl">
+    <input id="lbFirst" type="text" placeholder="שם פרטי" style="${inp}" autofocus>
+    <input id="lbLast" type="text" placeholder="שם משפחה" style="${inp}">
+    <input id="lbEmail" type="email" placeholder="כתובת מייל" style="${inp}">
+    <input id="lbInst" type="text" placeholder="מוסד לימודים" style="${inp};margin-bottom:14px">
     <button onclick="submitLeaderboard()" style="width:100%;padding:12px;background:var(--green);border:none;border-radius:10px;font-family:Rubik;font-size:1rem;font-weight:600;cursor:pointer">שמירה</button>
     <button onclick="closeLbPopup()" style="width:100%;padding:8px;background:none;border:none;font-family:Rubik;font-size:.85rem;color:#888;cursor:pointer;margin-top:4px">ביטול</button>
   `;
   popup.classList.add('show');
   overlay.classList.add('show');
-  setTimeout(()=>{const i=document.getElementById('lbName');if(i)i.focus();},300);
+  setTimeout(()=>{const i=document.getElementById('lbFirst');if(i)i.focus();},300);
 }
+function validEmail(e){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);}
 async function submitLeaderboard(){
-  const name = document.getElementById('lbName').value.trim();
-  const inst = document.getElementById('lbInst').value.trim();
-  if(!name){document.getElementById('lbName').style.borderColor='var(--wrong)';return;}
-  await saveToLeaderboard(name, inst, state.score, state.correct, state.questions.length);
+  const first = document.getElementById('lbFirst').value.trim();
+  const last  = document.getElementById('lbLast').value.trim();
+  const email = document.getElementById('lbEmail').value.trim();
+  const inst  = document.getElementById('lbInst').value.trim();
+  let bad=false;
+  [['lbFirst',first],['lbLast',last],['lbInst',inst]].forEach(([id,v])=>{document.getElementById(id).style.borderColor=v?'var(--gray-border)':'var(--wrong)';if(!v)bad=true;});
+  const emailEl=document.getElementById('lbEmail');
+  if(!validEmail(email)){emailEl.style.borderColor='var(--wrong)';bad=true;}else{emailEl.style.borderColor='var(--gray-border)';}
+  if(bad)return;
+  const fullName=`${first} ${last}`;
+  await saveToLeaderboard(fullName, inst, state.score, state.correct, state.questions.length, email);
   closeLbPopup();
   showLeaderboard();
 }
